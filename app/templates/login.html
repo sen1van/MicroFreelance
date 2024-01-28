@@ -1,0 +1,31 @@
+{% extends "base/base.html" %}
+
+
+{% block content %}
+
+
+<div class='row is-center' style="margin-top: 23vh;">
+
+    <form>
+        <fieldset id="forms__input " style=" max-width: 400px">
+            <legend>Вход в систему</legend>
+            <p>
+              <label for="input__text">Логин</label>
+              <input id="input__text" type="text" placeholder="Введите сюда логин">
+            </p>
+            <p>
+              <label for="input__password">Пароль</label>
+              <input id="input__password" type="password" placeholder="Введите сюда пароль">
+            </p>
+            <p class="grouped is-right">
+                <button class="button primary">Вход</button>
+            </p>
+            <p class="is-center text-center">
+                <a href="#"> Нажимая вход, вы соглашаетесь с политикой конфиденцальности </a>
+            </p>
+          </fieldset>
+      </form>
+  
+</div>
+
+{% endblock %}
