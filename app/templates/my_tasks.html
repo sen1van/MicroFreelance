@@ -1,0 +1,26 @@
+{% extends 'base/base.html' %}
+
+
+{% block content %}
+    {% for task in tasks %}
+    <div class='row'>
+        <div class='col-8' style='margin-left: auto; margin-right: auto;'>
+                <div class='card'>
+                    <header>
+                        <h4>{{ task.title }}</h4>
+                    </header>
+
+                    <p style="height: 95px; overflow: hidden; margin-bottom: 10px;">{{ task.disc }}</p>
+                    
+                    <div class='is-fixed' style="background-color: white; height: 10px; width: auto"></div>
+
+                    <span class='text-grey text-right tag is-large' style='position: absolute;'> {{ task.deadline }} </span>
+                    <footer class='is-right'>
+                    <span class='tag bd-primary bg-primary text-white' > {{ task.coast }} бубиков </span>
+                    <a class='button outline primary is-right' href='/' style='margin-left: 20px;'>Открыть</a>
+                    </footer>
+                </div>
+        </div>
+    </div>
+    {% endfor %}
+{% endblock %}
