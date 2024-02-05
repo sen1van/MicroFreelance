@@ -51,6 +51,8 @@ body {
   font-family: var(--font-family-sans);
   margin: 0;
   padding: 0;
+  transition-duration: 0.4s;
+  transition-timing-function: cubic-bezier(0, 0.8, 0.95, 1);
 }
 h1,
 h2,
@@ -473,6 +475,7 @@ input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type=
 select,
 textarea,
 textarea[type="text"] {
+  color: var(--font-color);
   font-family: inherit;
   padding: 0.8rem 1rem;
   border-radius: 0px;
@@ -712,12 +715,6 @@ button:disabled:hover {
 .nav a,
 .nav .brand {
     text-decoration: none;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
     padding: 1rem 2rem;
     color: var(--color-darkGrey);
 }

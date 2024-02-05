@@ -12,6 +12,7 @@
           --font-color: #f5f5f5;
           --color-grey: #ccc;
           --color-darkGrey: #afadad;
+            
         }
       </style>
 </head>
@@ -36,11 +37,11 @@
             const bodyClass = document.body.classList;
             bodyClass.contains("dark")
             if (theme == 'light'){
-                el.innerHTML = "☀️";
+                el.innerHTML = "MicroFreelance🌙";
                 theme = 'dark'
                 bodyClass.add("dark");
             } else{
-                el.innerHTML = "🌙";
+                el.innerHTML = "MicroFreelance☀️";
                 theme = 'light'
                 bodyClass.remove("dark")
             }
