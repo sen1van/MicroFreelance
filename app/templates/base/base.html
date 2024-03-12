@@ -4,15 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="static/chota.css">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.svg') }}">
     <title>MicroFreelance</title>
     <style>
         body.dark {
           --bg-color: #000;
           --bg-secondary-color: #131316;
           --font-color: #f5f5f5;
+          --color-white: #000000;
           --color-grey: #ccc;
           --color-darkGrey: #afadad;
-            
+          --color-primary: #FFD300;
         }
       </style>
 </head>
@@ -37,11 +39,11 @@
             const bodyClass = document.body.classList;
             bodyClass.contains("dark")
             if (theme == 'light'){
-                el.innerHTML = "MicroFreelance🌙";
+                el.innerHTML = "🌙";
                 theme = 'dark'
                 bodyClass.add("dark");
             } else{
-                el.innerHTML = "MicroFreelance☀️";
+                el.innerHTML = "☀️";
                 theme = 'light'
                 bodyClass.remove("dark")
             }

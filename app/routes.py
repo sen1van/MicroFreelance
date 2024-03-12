@@ -1,33 +1,29 @@
-from flask import Flask
 from flask import render_template, flash, redirect, url_for, request
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-
-from config import Config
+from flask_login import login_user, logout_user, current_user, login_required
+from app import app, db
 from forms import LoginForm
-
+from models import User
 import fish
 
-from models import User
-
-
-app = Flask(__name__, static_url_path='/static')
-app.config.from_object(Config)
-db = SQLAlchemy(app)
 
 @app.route('/')
 @app.route('/index')
 def index():
-    print(User.query.get(1))
     return render_template('base/base.html')
 
 @app.route('/login/', methods=['GET', 'POST'])
 @app.route('/login', methods=['GET', 'POST'])
 def auth():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
     form = LoginForm()
     error = 'None'
     if form.validate_on_submit():
-        error='Не правильный логин или пароль'
+        user = User.query.filter_by(username=form.username.data)
+        if user is None or not user.check_password(form.password.data):
+            error='Не правильный логин или пароль'
+        login_user(user, remember=form.remember_me.data)
+        return redirect(url_for('index'))
     return render_template('login.html', form=form, error=error)
 
 
@@ -39,7 +35,3 @@ def my_tasks(filter = None):
     if filter == 'from-me':
         buff = [buff[0]]
     return render_template('my_tasks.html', tasks = buff, me = fish.me)
-
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
-
