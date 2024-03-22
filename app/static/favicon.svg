@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="107.44091mm"
+   height="107.44091mm"
+   viewBox="0 0 107.44091 107.44091"
+   version="1.1"
+   id="svg1"
+   inkscape:export-filename="favicon.svg"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Слой 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-41.963459,-59.327648)">
+    <rect
+       style="fill:#000000;stroke-width:0.264583"
+       id="rect3"
+       width="106.89829"
+       height="106.89829"
+       x="42.325214"
+       y="59.689404"
+       rx="6"
+       ry="6" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:129.839px;font-family:OpenSymbol;-inkscape-font-specification:OpenSymbol;fill:#ffffff;stroke-width:0.676242"
+       x="42.61705"
+       y="158.44823"
+       id="text3"><tspan
+         sodipodi:role="line"
+         id="tspan3"
+         style="stroke-width:0.676242"
+         x="42.61705"
+         y="158.44823">F</tspan></text>
+  </g>
+</svg>
