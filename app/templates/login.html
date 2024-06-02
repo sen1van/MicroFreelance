@@ -3,25 +3,23 @@
 
 {% block content %}
 
-
-<div class='row is-center' style="margin-top: 23vh;">
+<div class='row is-center' style="margin-top: 100px;">
 
   <form action="" method="post" novalidate>
     {{ form.hidden_tag() }}
     <fieldset id="forms__input " style=" max-width: 400px">
       <legend>Вход в систему</legend>
       <p>
-        {{ form.username.label }}
-        {{ form.username(size=32) }}
+        {{ form.login.label }}
+        {{ form.login(size=32) }}
       </p>
       <p>
         {{ form.password.label }}
         {{ form.password(size=32) }}
       </p>
       <p class="grouped is-right">
-        {% if error != 'None' %}
-          <span class="tag text-dark bd-error is-small">{{ error }}</span>
-        {% endif %}
+        <label style="margin-right: 0px; margin-bottom: 4px;">{{ form.remember_me.label }}</label>
+        {{ form.remember_me() }}
         {{ form.submit() }}
       </p>
       <p class="is-center text-center">

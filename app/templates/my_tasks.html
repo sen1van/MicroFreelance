@@ -1,32 +1,42 @@
 {% extends 'base/base.html' %}
-
-
 {% block content %}
-    {% for task in tasks %}
-    <div class='row'>
-        <div class='col-8' style='margin-left: auto; margin-right: auto;'>
-                <div class='card'>
-                    <header>
-                        <h4>{{ task.title }}</h4>
-                    </header>
-
-                    <p style="height: 6ch; overflow: hidden; margin-bottom: 10px;">{{ task.disc }}</p>
-                    
-                    <div class='is-fixed' style="background-color: white; height: 10px; width: auto"></div>
-
-                    <span class='text-grey text-right tag is-large' style='position: absolute;'> {{ task.deadline }} </span>
-                    
-                    <footer class='is-right hide-xs'>
-                        <span class='tag bd-primary bg-primary text-bg' > {{ task.coast }} бубиков </span>
-                        <a class='button outline primary is-right' href='/' style='margin-left: 20px;'>Открыть</a>
-                    </footer>
-
-                    <footer class='is-right hide-sm hide-md hide-lg' style="margin-top: 50px;">
-                        <span class='tag bd-primary bg-primary text-bg' > {{ task.coast }} бубиков </span>
-                        <a class='button outline primary is-right' href='/' style='margin-left: 20px;'>Открыть</a>
-                    </footer>
-                </div>
+<div class="row">
+    <div class='card' style="width: 300px; height: 300px; margin-right: 20px; ">
+        <h3>Фильтры</h3>
+        <div>
+            {% for i in range(5)%}
+                <a class="button outline tag" style="margin: 6px;">Теги {{i * "#"}}</a>
+            {% endfor %}
         </div>
     </div>
-    {% endfor %}
+    <div class="col">   
+            {% for task in tasks %}
+            <div class='row'>
+                <div class='col' style='margin-left: auto; margin-right: auto; max-width: 900px;'>
+                        <div class='card'>
+                            <header>
+                                <h4>{{ task.title }}</h4>
+                            </header>
+
+                            <p style="height: 6ch; overflow: hidden; margin-bottom: 10px;">{{ task.disc }}</p>
+                            
+                            <div class='is-fixed' style="background-color: white; height: 10px; width: auto"></div>
+
+                            <span class='text-grey text-right tag is-large' style='position: absolute;'> {{ task.deadline }} </span>
+                            
+                            <footer class='is-right hide-xs'>
+                                <span class='tag bd-primary bg-primary text-bg' > {{ task.coast }} бубиков </span>
+                                <a class='button outline primary is-right' href='/' style='margin-left: 20px;'>Открыть</a>
+                            </footer>
+
+                            <footer class='is-right hide-sm hide-md hide-lg' style="margin-top: 50px;">
+                                <span class='tag bd-primary bg-primary text-bg' > {{ task.coast }} бубиков </span>
+                                <a class='button outline primary is-right' href='/' style='margin-left: 20px;'>Открыть</a>
+                            </footer>
+                        </div>
+                </div>
+            </div>
+            {% endfor %}
+    </div>
+</div>
 {% endblock %}

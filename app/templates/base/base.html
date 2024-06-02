@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="static/chota.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <link rel="stylesheet" href="{{ url_for('static', filename='chota.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.svg') }}">
     <title>MicroFreelance</title>
     <style>
@@ -12,18 +12,31 @@
           --bg-secondary-color: #131316;
           --font-color: #f5f5f5;
           --color-white: #000000;
-          --color-grey: #ccc;
+          --color-grey: #ffffff;
           --color-darkGrey: #afadad;
           --color-primary: #FFD300;
+        }
+        .toogle:not(:focus)>.hideable {
+            display:none;
         }
       </style>
 </head>
 <body>
 
-    <div class="container">
+    <div class="container" style="min-height: 90vh;">
         {% include 'base/header.html' %}
         {% block content %}
         {% endblock %}
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul class="card" style="position: fixed; bottom: 1vh; left: 1vw; width: 70vw; max-width: 400px;">
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        {% endwith %}
     </div>
 
     

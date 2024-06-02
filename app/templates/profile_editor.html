@@ -1,0 +1,28 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<form method="POST" enctype='multipart/form-data'>
+    <div class="card" style="padding: 20px;">
+        {{ form.hidden_tag() }} 
+        <div class="row" style="margin: 0;">
+            {{ form.photo(style="width: 300px; height:300px;", accept=".png,.jpg,.webp,.gif")}}
+            <div class="col" style="padding-left: 20px;">
+                <div class="row">
+                    <h2>{{ form.name(size=32, value=user.name) }}</h2>
+                </div>    
+            <div class="row">
+                <p>Оценка +209</p>
+            </div>
+            <div>
+                <blockquote class="" style="margin-left: -10px; margin-right: 10px; height: 150px;">
+                    {{ form.aboutme(size=32, style="resize: none; height:120px") }}
+                </blockquote>
+            </div>
+        </div>
+    </div>
+        <div class="row">
+            {{ form.submit(class="col button success outline text-center", tabindex="0", style="margin-bottom: 0px; margin-top: 20px;") }}
+        </div>
+    </div>
+</form>
+{% endblock %}
