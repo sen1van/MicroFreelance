@@ -9,6 +9,7 @@ from forms import LoginForm, ProfileEditorForm
 from app import db
 from models import User
 from config import Config
+from utils import to_fix_size
 
 @app.route('/login/', methods=['GET', 'POST'])
 @app.route('/login', methods=['GET', 'POST'])
@@ -24,7 +25,7 @@ def login():
             return redirect(url_for('login'))
         
         flash('Вы успешно вошли')
-        login_user(user, remember=form.remember_me.data)
+        login_user(user, remember=True)
         return redirect(url_for('login'))
 
     return render_template('login.html', form=form)

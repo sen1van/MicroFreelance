@@ -2,3 +2,5 @@
 **/.vscode
 **/__pycache__
 tailwind.exe
+**/tailwind.config.js
+**/tailwind.cmd

@@ -1,32 +1,28 @@
 {% extends 'base/base.html' %}
 
 {% block content %}
-<div class="card" style="padding-top: 20px; padding-bottom: -20px;">
-    <div class="row" style="margin: 0px; padding: 0px;">
+<div class="sm:shadow sm:border p-5 rounded-xl flex flex-wrap sm:flex-nowrap flex-col sm:flex-row">
+    <div class="flex grow justify-center sm:grow-0">
         <img
-            class="is-center "
-            src="{{ url_for('static', filename='avatars/'+user.login + '.webp') }}" 
-            style="border-style: dashed; border-radius: 30px; width: 300px; height: 300px; margin-left: auto; margin-right: auto;">
-        <div class="col" style="padding-left: 20px;">
-            <div class="row">
-                <h2>{{ user.name }}</h2>
-            </div>    
-            <div class="row">
-                <p>Оценка +209</p>
-            </div>
-            <div>
-                <blockquote class="" style="margin-left: -10px; margin-right: -10px;margin-bottom: 0px; height: 177px; overflow-y: scroll;">
-                    <pre style="margin: 0px; padding: 0px; overflow-x: hidden; word-wrap: anywhere; white-space: pre-wrap;">{{ user.aboutme }}</pre>
-                </blockquote>
-            </div>
-        </div>
+            class="rounded size-[300px] shrink-0 shadow min-w-[300px]"
+            src="{{ url_for('static', filename='avatars/'+user.login + '.webp') }}"
+        >
+    </div>
+    <div class="flex flex-col sm:ml-5 grow">
+        <a class="text-4xl text-center sm:text-left mt-5 sm:mt-0">{{ user.name }}</a>
+        <p class="mt-2">Оценка +209</p>
+        <div class="p-2 bg-amber-100 mt-3 h-[205px] overflow-y-scroll whitespace-pre-wrap break-all font-mono"> {{ user.aboutme }} </div>
     </div>
 </div>
+
+
 {% if owner %}
-<div class="card row" style="margin-top: 20px; padding-bottom: 0; margin-left: 0; margin-right: 0; ">
-    <h4 class="col-6">Действия с вашем аккаунтом</h4>
-    <a class="col-3 button dark outline col" href="/profile-editor" tabindex="0" style="width: 200px">Редактировать</a>
-    <a class="col-3 button error outline col" href="/logout" tabindex="0" style="width: 200px">Выйти</a>
+<div class="sm:shadow border mt-5 p-5 sm:rounded-xl flex space-x-2 flex-row flex-wrap">
+    <p class="flex text-xl mt-0 sm:mt-1 grow text-center justify-center sm:justify-start">Действия с вашем аккаунтом:</p>
+    <div class="shrink-0 flex space-x-2 mx-auto grow sm:grow-0 justify-center sm:justify-start mt-3 sm:mt-0">
+        <a class="rounded-lg px-10 shadow py-2 flex bg-black text-white font-semibold justify-center cursor-pointer w-[130px]" href="/profile-editor" tabindex="0">Редактировать</a>
+        <a class="rounded-lg px-10 shadow py-2 flex bg-black text-white font-semibold justify-center cursor-pointer w-[130px]" href="/logout" tabindex="0">Выйти</a>
+    </div>
 </div>
 {% endif %}
 {% endblock %}

@@ -1,42 +1,25 @@
 {% extends 'base/base.html' %}
+
 {% block content %}
-<div class="row">
-    <div class='card' style="width: 300px; height: 300px; margin-right: 20px; ">
-        <h3>Фильтры</h3>
-        <div>
-            {% for i in range(5)%}
-                <a class="button outline tag" style="margin: 6px;">Теги {{i * "#"}}</a>
-            {% endfor %}
-        </div>
-    </div>
-    <div class="col">   
-            {% for task in tasks %}
-            <div class='row'>
-                <div class='col' style='margin-left: auto; margin-right: auto; max-width: 900px;'>
-                        <div class='card'>
-                            <header>
-                                <h4>{{ task.title }}</h4>
-                            </header>
-
-                            <p style="height: 6ch; overflow: hidden; margin-bottom: 10px;">{{ task.disc }}</p>
-                            
-                            <div class='is-fixed' style="background-color: white; height: 10px; width: auto"></div>
-
-                            <span class='text-grey text-right tag is-large' style='position: absolute;'> {{ task.deadline }} </span>
-                            
-                            <footer class='is-right hide-xs'>
-                                <span class='tag bd-primary bg-primary text-bg' > {{ task.coast }} бубиков </span>
-                                <a class='button outline primary is-right' href='/' style='margin-left: 20px;'>Открыть</a>
-                            </footer>
-
-                            <footer class='is-right hide-sm hide-md hide-lg' style="margin-top: 50px;">
-                                <span class='tag bd-primary bg-primary text-bg' > {{ task.coast }} бубиков </span>
-                                <a class='button outline primary is-right' href='/' style='margin-left: 20px;'>Открыть</a>
-                            </footer>
-                        </div>
+<div class="divide-y sm:divide-y-0 mt-5 border-t sm:border-t-0">
+    {% for task in tasks %}
+        <a href="/123" style="display: block;">
+            <div class="sm:shadow sm:border sm:mb-3 sm:w-4/6 mx-auto p-5 sm:rounded-xl cursor-pointer h-xl">
+                <div class="flex">
+                    <p class="font-semibold text-xl grow"> {{ task.title }} </p>
+                    <p class="font-semibold text-xl shrink-0">{{ task.coast }} часов</p>
                 </div>
+                <p class="h-20 overflow-hidden whitespace-pre-wrap mt-2">{{ task.disc }} </p>
+                <div class="flex mt-2">
+                    <p class="grow"> {{ task.date }} </p>
+                    <div class="shrink-0 flex">
+                        <p class="shrink-0 mr-2">{{ task.owner_name }}</p>
+                        <img class="size-6 rounded-full ml" src="{{ url_for('static', filename='fishs/photofish1x1.png') }}">
+                    </div>
+                </div>
+                
             </div>
-            {% endfor %}
-    </div>
+        </a>
+    {% endfor %}
 </div>
 {% endblock %}

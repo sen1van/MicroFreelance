@@ -3,65 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <link rel="stylesheet" href="{{ url_for('static', filename='chota.css') }}">
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.svg') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='compile.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='base_assets/favicon.svg') }}">
     <title>MicroFreelance</title>
-    <style>
-        body.dark {
-          --bg-color: #000;
-          --bg-secondary-color: #131316;
-          --font-color: #f5f5f5;
-          --color-white: #000000;
-          --color-grey: #ffffff;
-          --color-darkGrey: #afadad;
-          --color-primary: #FFD300;
-        }
-        .toogle:not(:focus)>.hideable {
-            display:none;
-        }
-      </style>
 </head>
 <body>
-
-    <div class="container" style="min-height: 90vh;">
-        {% include 'base/header.html' %}
+    {% include 'base/header.html' %}
+    <div class="container max-w-5xl mx-auto sm:mt-10">
         {% block content %}
         {% endblock %}
-
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-            <ul class="card" style="position: fixed; bottom: 1vh; left: 1vw; width: 70vw; max-width: 400px;">
-                {% for message in messages %}
-                <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
-        {% endwith %}
     </div>
-
-    
-    <script>
-        var theme = localStorage.getItem("theme");
-        if (theme == "light"){
-            localStorage.setItem("theme", "light");
-        } else {
-            theme = "light";
-            switchMode(document.querySelector('#theme-switch'))
-        }
-        function switchMode(el) {
-            const bodyClass = document.body.classList;
-            bodyClass.contains("dark")
-            if (theme == 'light'){
-                el.innerHTML = "🌙";
-                theme = 'dark'
-                bodyClass.add("dark");
-            } else{
-                el.innerHTML = "☀️";
-                theme = 'light'
-                bodyClass.remove("dark")
-            }
-            localStorage.setItem("theme", theme);
-        }
-      </script>
+    <div class="h-svh w-1">
+        <!-- space for scrool ;) -->
+    </div>
 </body>
 </html>

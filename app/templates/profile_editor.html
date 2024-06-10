@@ -2,27 +2,28 @@
 
 {% block content %}
 <form method="POST" enctype='multipart/form-data'>
-    <div class="card" style="padding: 20px;">
-        {{ form.hidden_tag() }} 
-        <div class="row" style="margin: 0;">
-            {{ form.photo(style="width: 300px; height:300px;", accept=".png,.jpg,.webp,.gif")}}
-            <div class="col" style="padding-left: 20px;">
-                <div class="row">
-                    <h2>{{ form.name(size=32, value=user.name) }}</h2>
-                </div>    
-            <div class="row">
-                <p>Оценка +209</p>
-            </div>
-            <div>
-                <blockquote class="" style="margin-left: -10px; margin-right: 10px; height: 150px;">
-                    {{ form.aboutme(size=32, style="resize: none; height:120px") }}
-                </blockquote>
-            </div>
+    {{ form.hidden_tag() }} 
+    <div class="sm:shadow sm:border p-5 rounded-xl flex flex-wrap sm:flex-nowrap flex-col sm:flex-row">
+        <div class="flex grow justify-center sm:grow-0">
+            {{ form.photo( accept=".png,.jpg,.webp,.gif", style="display:none;", id="avatar_edit", 
+            onchange="document.getElementById('avatar').src = window.URL.createObjectURL(this.files[0])")}}
+            <img
+            class="rounded size-[300px] shrink-0 shadow min-w-[300px] brightness-50"
+            src="{{ url_for('static', filename='avatars/'+user.login + '.webp') }}"
+            id="avatar"
+            >
+
+            <a class="p-5 drop-shadow-2xl bg-black/30 backdrop-blur rounded-xl text-white absolute mt-[115px] h-[70px] cursor-pointer" onclick="getElementById('avatar_edit').click();">Изменить</a>
+        </div>
+        <div class="flex flex-col sm:ml-5 grow">
+            <div class="mt-1 sm:mt-0 min-w-0 text-4xl" >{{ form.name(value=user.name, size=0, style="resize: none;", class="w-full p-0 m-0 h-13") }}</div>
+            <p class="mt-2">Оценка +209</p>
+            <div class="p-2 bg-amber-100 font-mono w-full min-w-0 mt-2"> {{ form.aboutme(size=0, style="resize: none;", class="w-full h-[160px]") }} </div>
         </div>
     </div>
-        <div class="row">
-            {{ form.submit(class="col button success outline text-center", tabindex="0", style="margin-bottom: 0px; margin-top: 20px;") }}
-        </div>
+    <div class="flex justify-end">
+        {{ form.submit(class="rounded-lg px-10 shadow py-2 bg-black text-white font-semibold justify-center cursor-pointer mt-5 flex mx-5 sm:mx-0 w-full", tabindex="0") }}
     </div>
 </form>
 {% endblock %}
+

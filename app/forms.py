@@ -7,12 +7,11 @@ from wtforms.validators import DataRequired
 class LoginForm(FlaskForm):
     login = StringField('Логин', validators=[DataRequired()])
     password = PasswordField('Пароль', validators=[DataRequired()])
-    remember_me = BooleanField('Не выходить')
-    submit = SubmitField('Вход')
+    submit = SubmitField('Войти')
 
 class ProfileEditorForm(FlaskForm):
     name = StringField('Имя', validators=[DataRequired()])
-    aboutme = TextAreaField('Обомне', default="My text here", validators=[DataRequired()])
+    aboutme = TextAreaField('Обомне', validators=[DataRequired()])
     photo = FileField('image', validators=[FileAllowed(['jpg', 'png', 'webp', 'gif'], 'Images only!')])
     submit = SubmitField('Завершить')
 
