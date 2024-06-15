@@ -2,24 +2,32 @@
 
 {% block content %}
 <div class="divide-y sm:divide-y-0 mt-5 border-t sm:border-t-0">
+        <a href="/create-post" style="display: block;">
+        <div class="sm:shadow sm:border sm:mb-3 sm:w-4/6 mx-auto p-5 sm:rounded-xl cursor-pointer h-16 py-2 w-64">
+            <div class="bg-white h-full rounded-xl text-center justify-center grid w-full content-center">
+                <span class="text-2xl mb-2 text-black">+</span> 
+            </div>
+        </div>
+    </a>
     {% for task in tasks %}
-        <a href="/123" style="display: block;">
-            <div class="sm:shadow sm:border sm:mb-3 sm:w-4/6 mx-auto p-5 sm:rounded-xl cursor-pointer h-xl">
+        <a href="/post/{{ task.id }}" style="display: block;">
+            <div class="sm:shadow sm:border sm:mb-3 sm:w-4/6 mx-auto p-5 sm:rounded-xl h-48 cursor-pointer">
                 <div class="flex">
                     <p class="font-semibold text-xl grow"> {{ task.title }} </p>
-                    <p class="font-semibold text-xl shrink-0">{{ task.coast }} часов</p>
+                    <p class="font-semibold text-xl shrink-0">{{ task.coast }} {{ task.currency }}</p>
                 </div>
-                <p class="h-20 overflow-hidden whitespace-pre-wrap mt-2">{{ task.disc }} </p>
+                <p class="h-20 overflow-hidden whitespace-pre-wrap mt-2">{{ task.data_text[:50] }} </p>
                 <div class="flex mt-2">
-                    <p class="grow"> {{ task.date }} </p>
+                    <p class="grow"> {{ task.create_date }} </p>
                     <div class="shrink-0 flex">
-                        <p class="shrink-0 mr-2">{{ task.owner_name }}</p>
-                        <img class="size-6 rounded-full ml" src="{{ url_for('static', filename='fishs/photofish1x1.png') }}">
+                        <p class="shrink-0 mr-2">{{ task.author.name }}</p>
+                        <img class="size-6 rounded-full ml" src="{{ url_for('static', filename='avatars/' + task.author.login + '.webp') }}">
                     </div>
                 </div>
                 
             </div>
         </a>
     {% endfor %}
+
 </div>
 {% endblock %}

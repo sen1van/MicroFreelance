@@ -1,0 +1,82 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<link href="{{ url_for('static', filename='post_editor/quill.snow.css') }}" rel="stylesheet" />
+
+<form method="POST" enctype='multipart/form-data'>
+    
+    <div class="mt-5 p-5">
+        {% if edit %}
+        {{ form.hidden_tag() }}
+            <div class="font-semibold text-2xl pb-5"> 
+                {{ form.title(placeholder='Введите заголовок', class="shadow border p-4 rounded-xl w-full") }} 
+                
+            </div>
+        {% else %}
+        <div>
+            <div class="font-semibold text-2xl pb-5 px-4"> 
+                {{data.title}}
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="py-5 shrink-0">
+            {% if edit %}
+                <a class="flex flex-nowrap grow-0 shrink-0 ml-3">
+            {% else %}
+                <a href="/profile{{author.id}}" class="flex flex-nowrap grow-0 shrink-0 ml-3">
+            {% endif %}
+                <img class="size-20 rounded-full" src="{{ url_for('static', filename='avatars/'+author.login + '.webp') }}">
+                <div class="flex-col">
+                    <p class="text-xl ml-5 font-semibold">{{ author.name }}</p>
+                    {% if edit %}
+                        <p class=" ml-5"> {{ form.coast(class='text-xl w-40 shadow p-2 rounded-md', placeholder='Зарплата') }} {{ form.currency(value="часов", class='w-20 shadow p-2 rounded-md') }} </p>
+                    {% else %}
+                        <p class=" ml-5"> <span class="text-xl">{{ data.coast }}</span> {{ data.currency }} </p>
+                    {% endif %}
+                </div>
+            </a>
+        </div>
+        <div>
+            {% if edit %}
+                {{ form.data(style="display:none;", id='data') }}
+                {{ form.data_text(style="display:none;", id='data_text') }}
+                <div class="w-full border rounded-xl h-96 mt-5 resize-none p-2 shadow" id="editor">
+                    <p>Описание</p>
+                </div>
+            {% else %}
+                <div class="ql-container ql-snow ql-editor bg-slate-100 rounded-xl">
+                   {{ data.data|safe }}
+                </div>
+            {% endif %}
+            {% if edit %}
+                <!-- Include the Quill library -->
+
+                <script src="{{ url_for('static', filename='post_editor/quill.js') }}"></script>
+
+                <!-- Initialize Quill editor -->
+                <script>
+                    const toolbarOptions = [{ header: '2' }, 'bold', 'italic', 'underline', 'strike', { 'list': 'ordered'}, { 'list': 'bullet' }, {'background': 'yellow'}, { 'align': [] }    ];
+                    
+                    const quill = new Quill('#editor', {
+                        theme: 'snow',
+                        modules: {
+                            toolbar: toolbarOptions
+                        }
+                });
+                </script>
+                <div class="flex">
+                    <div class="grow w-0 h-0 hidden sm:w-full sm:h-2 sm:flex"></div>
+                    <a 
+                        onclick="getElementById('data').value = quill.getSemanticHTML(); getElementById('data_text').value = quill.getText().replaceAll('\n', ' '); getElementById('submit').click();"
+                        class="shadow shadow-black border border-black bg-black text-white p-5 rounded-xl mt-5 w-full sm:w-44 text-center cursor-pointer"
+                    >
+                        Завершить
+                    </a>
+                    {{ form.submit(id='submit') }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</form>
+{% endblock %}
