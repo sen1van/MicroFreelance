@@ -19,7 +19,12 @@ class PostEditorForm(FlaskForm):
     title = StringField('Заголовок', validators=[DataRequired()])
     coast = FloatField('Цена')
     currency = StringField('Валюта')
-    data = StringField('Описание', validators=[DataRequired()])
-    data_text = StringField('Описание текст', validators=[DataRequired()])
+    data = StringField('Описание')
+    data_text = StringField('Описание текст')
     files = MultipleFileField() # todo
     submit = SubmitField('Завершить')
+
+
+class PostRespondForm(FlaskForm):
+    text = TextAreaField('Откликнутся', validators=[DataRequired()])
+    submit = SubmitField('Откликнутся')

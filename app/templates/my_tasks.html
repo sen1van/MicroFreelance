@@ -1,24 +1,35 @@
 {% extends 'base/base.html' %}
 
 {% block content %}
-<div class="divide-y sm:divide-y-0 mt-5 border-t sm:border-t-0">
-        <a href="/create-post" style="display: block;">
-        <div class="sm:shadow sm:border sm:mb-3 sm:w-4/6 mx-auto p-5 sm:rounded-xl cursor-pointer h-16 py-2 w-64">
-            <div class="bg-white h-full rounded-xl text-center justify-center grid w-full content-center">
+<div class="divide-y sm:divide-y-0 mt-5 border-y sm:border-0">
+    {% if create_new %}
+    <a href="/create-post" style="display: block;">
+        <div class="sm:shadow sm:border sm:mb-3 sm:w-4/6 mx-auto p-5 sm:rounded-xl cursor-pointer h-16 py-2 w-64 hover:sm:outline hover:sm:border-0 transition-all hover:sm:scale-105">
+            <div class="bg-white h-full rounded-xl text-center justify-center grid w-full content-center sm:bg-transparent">
                 <span class="text-2xl mb-2 text-black">+</span> 
             </div>
         </div>
     </a>
+    {% endif %}
+    {% if title %}
+        <a href="/create-post" style="display: block;">
+            <div class=" sm:mb-3 sm:w-4/6 mx-auto p-5 sm:rounded-xl h-16 py-2 w-64">
+                <div class="bg-white h-full rounded-xl text-center justify-center grid w-full content-center sm:bg-transparent">
+                    <span class="text-2xl mb-2 text-black">{{ title }}</span> 
+                </div>
+            </div>
+        </a>
+    {% endif %}
     {% for task in tasks %}
         <a href="/post/{{ task.id }}" style="display: block;">
-            <div class="sm:shadow sm:border sm:mb-3 sm:w-4/6 mx-auto p-5 sm:rounded-xl h-48 cursor-pointer">
+            <div class="sm:shadow sm:border bg-white sm:mb-3 sm:w-4/6 mx-auto p-5 sm:rounded-xl cursor-pointer transition-all hover:sm:outline hover:sm:scale-105  hover:sm:shadow-gray-600">
                 <div class="flex">
-                    <p class="font-semibold text-xl grow"> {{ task.title }} </p>
-                    <p class="font-semibold text-xl shrink-0">{{ task.coast }} {{ task.currency }}</p>
+                    <p class="font-semibold text-xl grow break-all line-clamp-2"> {{ task.title }} </p>
+                    <p class="font-semibold text-xl shrink-0">{{ task.coast|int  }} {{ task.currency }}</p>
                 </div>
-                <p class="h-20 overflow-hidden whitespace-pre-wrap mt-2">{{ task.data_text[:50] }} </p>
-                <div class="flex mt-2">
-                    <p class="grow"> {{ task.create_date }} </p>
+                <p class="min-h-16 overflow-hidden whitespace-pre-wrap break-all mt-2 w-auto line-clamp-3">{{ task.data_text|truncate(150) }}</p>
+                <div class="flex mt-4">
+                    <p class="grow"> {{ task.create_date.strftime("%H:%M %d/%m/%Y") }} </p>
                     <div class="shrink-0 flex">
                         <p class="shrink-0 mr-2">{{ task.author.name }}</p>
                         <img class="size-6 rounded-full ml" src="{{ url_for('static', filename='avatars/' + task.author.login + '.webp') }}">

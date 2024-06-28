@@ -7,14 +7,39 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='base_assets/favicon.svg') }}">
     <title>MicroFreelance</title>
 </head>
+{% if false %}
+    <colors class=" bg-green-500 border-green-600
+                    bg-red-500 border-red-600
+                    bg-yellow-500 border-yellow-600
+                    bg-gray-500 border-gray-600"></colors>
+{% endif %}
+
 <body>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="fixed bottom-24 flex flex-col right-4 xl:right-24 cursor-pointer">
+                {% for message in messages %}
+                    <a class="p-5 rounded-md outline-4 text-white border-2 border-{{message[1]}}-600 bg-{{message[1]}}-500 mt-2 transition-all sm:hover:opacity-50 relative min-w-60 text-center"
+                        id="{{ loop.index }}" onclick=" getElementById('{{ loop.index }}').setAttribute('style', 'display: none') ">{{message[0]}}
+                        <span class="absolute right-2 bottom-0 text-black transition-opacity text-sm opacity-50 font-semibold duration-1000 ease-out" id="close-helper">Нажмите чтобы закрыть</span>
+                    </a>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
     {% include 'base/header.html' %}
-    <div class="container max-w-5xl mx-auto sm:mt-10">
+    <div class="container max-w-5xl mx-auto sm:mt-10" id="container">
         {% block content %}
         {% endblock %}
     </div>  
     <div class="h-20 w-1">
         <!-- space for scrool ;) -->
     </div>
+    <script>
+        function closehelper(){
+            document.getElementById('close-helper').setAttribute('style', 'opacity: 0');
+        }
+        setTimeout(closehelper, 1000);
+    </script>
 </body>
 </html>

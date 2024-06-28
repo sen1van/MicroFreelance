@@ -13,7 +13,7 @@
             id="avatar"
             >
 
-            <a class="p-5 drop-shadow-2xl bg-black/30 backdrop-blur rounded-xl text-white absolute mt-[115px] h-[70px] cursor-pointer" onclick="getElementById('avatar_edit').click();">Изменить</a>
+            <a class="p-5 drop-shadow-2xl bg-black/30 backdrop-blur rounded-xl text-white absolute mt-[115px] h-[70px] cursor-pointer transition-all hover:sm:scale-125" onclick="getElementById('avatar_edit').click();">Изменить</a>
         </div>
         <div class="flex flex-col sm:ml-5 grow">
             <div class="mt-1 sm:mt-0 min-w-0 text-4xl" >{{ form.name(value=user.name, size=0, style="resize: none;", class="w-full p-0 m-0 h-13") }}</div>
@@ -21,8 +21,8 @@
             <div class="p-2 bg-amber-100 font-mono w-full min-w-0 mt-2"> {{ form.aboutme(size=0, style="resize: none;", class="w-full h-[160px]") }} </div>
         </div>
     </div>
-    <div class="flex justify-end">
-        {{ form.submit(class="rounded-lg px-10 shadow py-2 bg-black text-white font-semibold justify-center cursor-pointer mt-5 flex mx-5 sm:mx-0 w-full", tabindex="0") }}
+    <div class="flex justify-end mx-5">
+        {{ form.submit(class="rounded-lg px-10 shadow py-2 bg-black text-white font-semibold justify-center cursor-pointer mt-5 flex mx-5 sm:mx-0 w-full transition-all hover:sm:scale-105", tabindex="0") }}
     </div>
 </form>
 {% endblock %}

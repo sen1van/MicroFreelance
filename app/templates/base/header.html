@@ -1,31 +1,52 @@
-<nav class="flex justify-between flex-wrap p-0 sm:p-6 sm:shadow sm:h-fit h-0 sm:visible collapse">
+<style>
+  .dropdown-content{
+    display: none;
+  }
+  .dropdown:hover .dropdown-content{
+    display: block;
+  }
+</style>
+<nav class="flex justify-between flex-wrap p-6 shadow sm:h-fit h-0 sm:visible collapse fixed w-full bg-white/20 z-50 backdrop-blur-sm">
     <div class="container mx-auto flex flex-wrap justify-center max-w-5xl">
       <div class="flex justify-items-center">
         <a class="flex font-semibold text-3xl tracking-tight" href="/">MicroFreelance</a>
       </div>
       <div class="grow"></div>
-      <div class="flex justify-items-center text-center place-items-center">
-          <a class="mx-4 flex" href="#"        >Все заявки </a>
-          <a class="mx-4 flex" href="/my-tasks">Мои заявки </a>
-          <a class="mx-4 flex" href="/login"   >Мой Аккаунт</a>
+      <div class="flex justify-items-center text-center place-items-center relative">
+          <a class="mx-4 flex" href="/all-tasks"> Все заявки </a>
+          <a class="mx-4 flex" href="/my-tasks">  Мои заявки </a>
+          <div class="dropdown">
+            <a class="mx-4 flex " href="/login">   Мой Аккаунт</a>
+            <div class="absolute text-center w-32 dropdown-content">
+              <div class="flex flex-col mt-2 bg-white border rounded-xl divide-y shadow">
+                <a href="/archive" class="p-3">Архив</a>
+                <a href="/chats" class="p-3">Чаты</a>
+                <a href="/logout" class="p-3 bg-red-600 overflow-hidden rounded-b-xl text-white border-1">Выйти</a>
+              </div>
+            </div>
+          </div>
       </div>
   </div>
 </nav>
+
+<div class="sm:h-24 h-0 sm:visible collapse">
+
+</div>
 
 <div class="w-full flex justify-center sm:m-0 sm:h-0 mt-5">
   <a class="text-4xl sm:collapse visible text-center flex z-50">MicroFreelance</a>
 </div>
 
-<nav class="bottom-0 left-0 right-0 w-full fixed sm:collapse visible flex text-center p-6 bg-white border-t z-50">
-  <div class="w-full flex justify-stretch divide-x ">
+<nav class="bottom-0 left-0 right-0 w-full fixed sm:collapse visible flex text-center p-6 bg-white/60 backdrop-blur-sm border-t z-50 border-black">
+  <div class="w-full flex justify-stretch divide-x divide-black">
     <div class="flex grow">
-      <a  href="#" class="mx-auto">         Все заявки </a>
+      <a  href="/all-tasks" class="mx-auto">Все заявки </a>
     </div>
     <div class="flex grow">
       <a href="/my-tasks" class="mx-auto">  Мои заявки </a>
     </div>
     <div class="flex grow">
-      <a href="/login" class="mx-auto"      >Мой Аккаунт</a>
+      <a href="/login" class="mx-auto">     Мой Аккаунт</a>
     </div>
   </div>
 </nav>
