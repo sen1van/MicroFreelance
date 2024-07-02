@@ -1,0 +1,18 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<a href="" style="display: block;">
+    <div class="sm:shadow sm:border bg-white sm:mb-3 sm:w-4/6 mx-auto p-5 sm:rounded-xl cursor-pointer transition-all hover:sm:outline hover:sm:scale-105  hover:sm:shadow-gray-600 flex relative">
+        <img class="size-32 rounded ml" src="{{ url_for('static', filename='avatars/' + current_user    .login + '.webp') }}">
+        <div class="ml-5">
+            <p class="font-semibold text-xl grow -mt-1"> Название поста <span class="text-sm text-gray-900">(Дмитрий Леонтьев)</span></p>
+            <div class="grid content-center  h-full pb-5">
+                <p class="text-sm font-semibold text-gray-800 ml-1">Дмитрий Леонтьев:</p>
+                <p class="text-sm indent-3 hyphens-auto line-clamp-3 text-gray-800 subpixel-antialiased ml-1">{{lipsum(html=False)}}</p>
+            </div>
+        </div>
+    </div>
+</a>
+
+{% endblock %}

@@ -215,6 +215,13 @@ def archiving_post(post_id, user_id):
     db.session.commit()
     return redirect(url_for("post", id=post_id))
 
+@app.route('/chats')
+@login_required
+def chats():
+    return render_template('chats_list.html', current_user = current_user)
+
+
+
 
 @app.errorhandler(404)
 def page_not_found(e):
