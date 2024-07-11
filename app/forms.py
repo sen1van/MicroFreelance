@@ -17,7 +17,7 @@ class ProfileEditorForm(FlaskForm):
 
 class PostEditorForm(FlaskForm):
     title = StringField('Заголовок', validators=[DataRequired()])
-    coast = FloatField('Цена')
+    coast = StringField('Цена')
     currency = StringField('Валюта')
     data = StringField('Описание')
     data_text = StringField('Описание текст')
@@ -28,3 +28,14 @@ class PostEditorForm(FlaskForm):
 class PostRespondForm(FlaskForm):
     text = TextAreaField('Откликнутся', validators=[DataRequired()])
     submit = SubmitField('Откликнутся')
+
+
+class AdminUserEditForm(FlaskForm):
+    id = StringField('id')
+    login = StringField('login')
+    password = StringField('password')
+    name = StringField('name')
+    aboutme = TextAreaField('Обомне', validators=[DataRequired()])
+    contact_info = TextAreaField('contact_info')
+    account_type = StringField('account_type')
+    submit = SubmitField('Подтвердить')

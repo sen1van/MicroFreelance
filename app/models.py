@@ -17,6 +17,8 @@ class User(UserMixin, db.Model):
     password_hash: Mapped[Optional[str]]    = mapped_column(String(256))
     name: Mapped[Optional[str]]             = mapped_column(String(64))
     aboutme: Mapped[Optional[str]]          = mapped_column(String(256))
+    contact_info: Mapped[Optional[str]]     = mapped_column(String(256))
+    account_type: Mapped[str]               = mapped_column(String(256), default='student')
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password) 
@@ -43,8 +45,13 @@ class Post(db.Model):
     author_id: Mapped[int]                  = mapped_column(ForeignKey(User.id))
     create_date: Mapped[datetime.datetime]  = mapped_column(DateTime(timezone=True), server_default=func.now())
     update_date: Mapped[datetime.datetime]  = mapped_column(DateTime(timezone=True), server_default=func.now())
-    archived_date: Mapped[Optional[datetime.datetime]] = mapped_column(DateTime(timezone=True))
+    
+    selected: Mapped[bool]                  = mapped_column(default=False)
+    selected_date: Mapped[Optional[datetime.datetime]] = mapped_column(DateTime(timezone=True))
     archived: Mapped[bool]                  = mapped_column(default=False)
+    archived_date: Mapped[Optional[datetime.datetime]] = mapped_column(DateTime(timezone=True))
+
+    selected_respond_author_id: Mapped[Optional[int]] = mapped_column()
 
     respond: Mapped[list["PostRespond"]]    = relationship(back_populates="post", cascade="all, delete")
     author: Mapped["User"] = relationship()

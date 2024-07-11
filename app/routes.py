@@ -29,7 +29,7 @@ def login():
         login_user(user, remember=True)
         return redirect(url_for('profile'))
 
-    return render_template('login.html', form=form)
+    return render_template('login.html', form=form, current_user=current_user)
 
 @app.route('/logout')
 def logout():
@@ -48,7 +48,7 @@ def profile(login = None):
         is_owner = True
     user = db.session.scalar( sa.select(User).where(User.login == login))
     if user != None:
-        return render_template('profile.html', user = user, owner = is_owner)
+        return render_template('profile.html', user = user, owner = is_owner, current_user=current_user)
     return abort(404)
     
 @app.route('/profile-editor/', methods=['GET', 'POST'])
@@ -75,7 +75,7 @@ def profile_editor():
     if request.method == 'POST' and not form.validate():
         flash(['Произошла ошибка, возможно ошибка заполнения', 'red'])
     form.aboutme.data = current_user.aboutme
-    return render_template('profile_editor.html', user=current_user, form=form)
+    return render_template('profile_editor.html', current_user=current_user, form=form)
 
 
 @app.route('/my-tasks/<filter>')
@@ -83,7 +83,19 @@ def profile_editor():
 @app.route('/my-tasks')
 @login_required
 def my_tasks(filter = None):
-    return render_template('my_tasks.html', tasks = db.session.query( Post ).filter(Post.author_id == current_user.id).filter(Post.archived == False).order_by(sa.desc(Post.update_date)), create_new = True )
+    if current_user.account_type in ['admin', 'teacher']:
+        query = sa.select(Post)                         \
+            .where(Post.author_id == current_user.id)   \
+            .where(Post.archived == False)              \
+            .order_by(Post.selected.desc(), Post.update_date.desc())
+    else:
+        query = sa.select(Post)                         \
+            .where(Post.archived == False)                                    \
+            .where(Post.id.in_(
+                sa.select(PostRespond.post_id).where(PostRespond.author_id == current_user.id)
+            )).order_by(Post.selected.desc(), Post.update_date.desc())
+    
+    return render_template('tasks.html', tasks = list(db.session.scalars(query)), create_new = True, current_user=current_user, null_message='У вас нету обьявлений')
 
 @app.route('/')
 @app.route('/index')
@@ -91,13 +103,21 @@ def my_tasks(filter = None):
 @app.route('/all-tasks/')
 @app.route('/all-tasks')
 def all_tasks(filter = None):
-    return render_template('my_tasks.html', tasks = db.session.query( Post ).filter(Post.archived == False).order_by(sa.desc(Post.update_date)), create_new = True)
+    query = sa.select(Post)                                 \
+        .where(Post.selected == False)           \
+        .where(Post.archived == False)                      \
+        .order_by(Post.selected.desc(), Post.update_date.desc())
+    return render_template('tasks.html', tasks = list(db.session.scalars(query)), create_new = True, current_user=current_user, null_message='Сейчас на сайте обьявлений нет, приходите ещё')
 
 @app.route('/')
 @app.route('/archive/')
 @app.route('/archive')
 def archive(filter = None):
-    return render_template('my_tasks.html', tasks = db.session.query( Post ).filter(Post.archived == True).filter(Post.author_id == current_user.id).order_by(sa.desc(Post.archived)), create_new = False, title='Архив' )
+    query = sa.select(Post)                                         \
+        .where(Post.archived == True)                               \
+        .where(sa.or_(Post.author_id == current_user.id, Post.selected_respond_author_id == current_user.id)) \
+        .order_by(Post.selected.desc(), Post.update_date.desc())
+    return render_template('tasks.html', tasks = list(db.session.scalars(query)), create_new = False, title='Архив', current_user=current_user, null_message='В архиве пусто....')
 
 @app.route('/create-post/', methods=['GET', 'POST'])
 @app.route('/create-post',  methods=['GET', 'POST'])
@@ -159,6 +179,8 @@ def edit_post(post_id):
         data.coast = form.coast.data
         data.currency = form.currency.data
         flash(['Произошла ошибка, возможно ошибка заполнения', 'red'])
+    if data.archived or data.selected:
+        return redirect(url_for("post", id=post_id))
     return render_template('post.html', edit=True, form=form, current_user=current_user, data = data)
 
 @app.route('/post/<id>', methods=['GET', 'POST'])
@@ -179,10 +201,10 @@ def post(id = None):
             db.session.add(respond)
             db.session.commit()
             flash(['Данные сохранены', 'green'])
-        if respond:
+        if respond and not data.selected:
             form.text.data = respond.text
             form.submit.label.text = "Изменить"
-        responds = respond
+        responds = [respond]
     else:
         form=''
         if current_user.is_authenticated and data.author_id == current_user.id:
@@ -191,45 +213,130 @@ def post(id = None):
             responds = []
     return render_template('post.html', edit=False, form=form, data=data, current_user=current_user, responds=responds)
 
-@app.route('/delete-post/<id>')
-@login_required
-def delete_post(id = None):
-    data = db.session.scalar( sa.select(Post).where(Post.id == id) )
-    if data.author_id != current_user.id:
-        return abort(418)
-    db.session.delete(data)
-    db.session.commit()
-    flash(['Вы удалили пост', 'green'])
-    return redirect(url_for('my_tasks'))
+# Удалять посты пока нельзя, только архивация
+# Загатовка для админ панели
+# @app.route('/delete-post/<id>')
+# @login_required
+# def delete_post(id = None):
+#     data = db.session.scalar( sa.select(Post).where(Post.id == id) )
+#     if data.author_id != current_user.id:
+#         return abort(418)
+#     db.session.delete(data)
+#     db.session.commit()
+#     flash(['Вы удалили пост', 'green'])
+#     return redirect(url_for('my_tasks'))
 
-@app.route('/archiving-post/post<post_id>&user<user_id>')
+@app.route('/archiving-post/<post_id>')
 @login_required
-def archiving_post(post_id, user_id):
+def archiving_post(post_id):
     post = db.session.scalar( sa.select(Post).where(Post.id == post_id) )
-    if post.author_id != current_user.id:
-        return abort(418)
+    if post.author_id != current_user.id or post.selected:
+        return abort(403)
     post.archived = True
     post.archived_date = func.now()
+    db.session.commit()
+    return redirect(url_for("post", id=post_id))
+
+@app.route('/end-post/<post_id>')
+@login_required
+def end_post(post_id):
+    post = db.session.scalar( sa.select(Post).where(Post.id == post_id) )
+    if post.selected_respond_author_id != current_user.id or not post.selected:
+        return abort(403)
+    post.archived = True
+    post.archived_date = func.now()
+    db.session.commit()
+    return redirect(url_for("post", id=post_id))
+
+@app.route('/select_respond/post<post_id>&user<user_id>')
+@login_required
+def select_respond(post_id, user_id):
+    post = db.session.scalar( sa.select(Post).where(Post.id == post_id) )
+    if post.author_id != current_user.id:
+        return abort(403)
+    post.selected = True
+    post.selected_date = func.now()
+    post.selected_respond_author_id = user_id
     respond = db.session.query( PostRespond ).filter(PostRespond.author_id == user_id).filter(PostRespond.post_id == post_id).first()
     respond.selected = True
     db.session.commit()
     return redirect(url_for("post", id=post_id))
 
-@app.route('/chats')
+
+
+@app.route('/admin')
 @login_required
-def chats():
-    return render_template('chats_list.html', current_user = current_user)
+def admin_panel():
+    if current_user.account_type != "admin":
+        abort(418)
+    users = db.session.scalars(sa.select(User))
+    return render_template('admin/admin_panel.html', users=users)
 
 
+@app.route('/admin/<user_id>', methods=['GET', 'POST'])
+@login_required
+def admin_panel_edit_user(user_id):
+    if current_user.account_type != "admin":
+        abort(418)
+    user = db.session.scalar(sa.select(User).where(User.id == user_id))
+    form = AdminUserEditForm()
+    if form.validate_on_submit():
+        user.id         = form.id.data
+        user.login      = form.login.data
+        if form.password.data:
+            user.set_password(form.password.data)
+        user.name           = form.name.data
+        user.aboutme        = form.aboutme.data
+        user.contact_info   = form.contact_info.data
+        user.account_type   = form.account_type.data
+        db.session.commit()
+        flash(['Данные сохранены', 'green'])
+        return redirect(url_for("admin_panel"))
+    form.aboutme.data = user.aboutme
+    return render_template('admin/admin_user_edit.html', user=user, form=form)
+
+@app.route('/admin-create-new-user')
+def new_user():
+    if current_user.account_type != "admin":
+        abort(418)
+    if db.session.scalar(sa.select(User).where(User.login == 'new-user')) != None:
+        flash(['Новый пользователь уже создан', 'red'])
+        return redirect(url_for("admin_panel"))
+    u = User()
+    u.login = 'new-user'
+    u.set_password('new-user-password-change-it')
+    db.session.add(u)
+    db.session.commit()
+    flash(['Вы добавили пользователя', 'green'])
+    return redirect(url_for("admin_panel"))
+
+@app.route('/admin-delete-user/<id>')
+@login_required
+def delete_user(id):
+    if current_user.account_type != "admin":
+        abort(418)
+    data = db.session.scalar( sa.select(User).where(User.id == id) )
+    db.session.delete(data)
+    db.session.commit()
+    flash(['Вы удалили пользователя', 'green'])
+    return redirect(url_for('admin_panel'))
 
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template('errors/404.html'), 404
+    return render_template('errors/404.html', current_user=current_user), 404
 
 @app.errorhandler(401)
-def page_not_found(e):
-    return render_template('errors/401.html'), 401
+def login_required(e):
+    return render_template('errors/401.html', current_user=current_user), 401
+
+@app.errorhandler(403)
+def Forbidden(e):
+    return render_template('errors/403.html', current_user=current_user), 401
+
+@app.errorhandler(418)
+def teapot(e):
+    return render_template('errors/418.html', current_user=current_user), 401
 
 
 
@@ -238,10 +345,17 @@ def page_not_found(e):
 
 
 @app.route('/create-user-debug/<login>')
-def new_user(login):
+def new_user_debug(login):
     u = User()
     u.login = login
     u.set_password('1111')
     db.session.add(u)
+    db.session.commit()
+    return redirect(url_for("login"))
+
+@app.route('/do-admin-debug/<login>')
+def do_admin(login):
+    u = db.session.scalar(sa.select(User).where(User.login == login))
+    u.account_type = 'admin'
     db.session.commit()
     return redirect(url_for("login"))

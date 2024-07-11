@@ -1,0 +1,32 @@
+{% extends "base/base.html" %}
+
+
+{% block content %}
+
+<table class="table-auto w-full border">
+    <thead class="bg-gray-100">
+      <tr class="divide-x">
+        <th class="p-1 text-start">id</th>
+        <th class="p-1 text-start">login</th>
+        <th class="p-1 text-start">name</th>
+        <th class="p-1 text-start">accaunt_type</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for user in users%}
+      <tr class="border divide-x hover:bg-gray-100 cursor-pointer" onclick="window.location.replace('admin/{{user.id}}')">
+        <td class="p-1 text-start overflow-scroll">{{user.id}}</td>
+        <td class="p-1 text-start overflow-scroll">{{user.login}}</td>
+        <td class="p-1 text-start overflow-scroll">{{user.name}}</td>
+        <td class="p-1 text-start overflow-scroll">{{user.account_type}}</td>
+      </tr>
+    
+    {% endfor %}
+    </tbody>
+  </table>
+  <a href="admin-create-new-user">
+    <p class="text-center border mt-3 p-5">
+      +
+    </p>
+  </a>
+{% endblock %}

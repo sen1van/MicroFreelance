@@ -9,7 +9,7 @@
 <nav class="flex justify-between flex-wrap p-6 shadow sm:h-fit h-0 sm:visible collapse fixed w-full bg-white/20 z-50 backdrop-blur-sm">
     <div class="container mx-auto flex flex-wrap justify-center max-w-5xl">
       <div class="flex justify-items-center">
-        <a class="flex font-semibold text-3xl tracking-tight" href="/">MicroFreelance</a>
+        <a class="flex font-semibold text-3xl tracking-tight" href="/"> MicroFreelance</a><span class="text-lg text-white bg-black ml-1 p-1">[{{current_user.account_type}}]</span>
       </div>
       <div class="grow"></div>
       <div class="flex justify-items-center text-center place-items-center relative">
@@ -17,13 +17,17 @@
           <a class="mx-4 flex" href="/my-tasks">  Мои заявки </a>
           <div class="dropdown">
             <a class="mx-4 flex " href="/login">   Мой Аккаунт</a>
-            <div class="absolute text-center w-32 dropdown-content">
-              <div class="flex flex-col mt-2 bg-white border rounded-xl divide-y shadow">
-                <a href="/archive" class="p-3">Архив</a>
-                <a href="/chats" class="p-3">Чаты</a>
-                <a href="/logout" class="p-3 bg-red-600 overflow-hidden rounded-b-xl text-white border-1">Выйти</a>
+            {% if current_user.is_authenticated %}
+              <div class="absolute text-center w-32 dropdown-content">
+                <div class="flex flex-col mt-2 bg-white border rounded-xl shadow"> 
+                  <a href="/archive" class="p-3">Архив</a>
+                  {% if current_user.account_type == "admin" %}
+                    <a href="/admin" class="p-3 bg-black text-white">Админка</a>
+                  {% endif %}
+                  <a href="/logout" class="p-3 bg-red-600 overflow-hidden rounded-b-xl text-white border-1">Выйти</a>
+                </div>
               </div>
-            </div>
+            {% endif %}
           </div>
       </div>
   </div>
