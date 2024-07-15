@@ -10,5 +10,3 @@ login = LoginManager(app)
     
 import models
 import routes
-
-app.app_context().push()
