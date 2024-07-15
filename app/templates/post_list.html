@@ -1,0 +1,43 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<div class="list">
+    {% if create_new and current_user.account_type in ["admin", "teacher"]%}
+    <a href="/create-post" class="create_post">
+            <div class="post">
+                <img src="/static/icons/add.svg" class="icon">
+            </div>
+    </a>
+    {% endif %}
+    {% if title %}
+        <p class="list_title">{{ title }}</p> 
+    {% endif %}
+    {% if not tasks %}
+    <p class="null_message">{{null_message}}</p>
+    {% endif %}
+    {% for task in tasks %}
+        <a href="/post/{{ task.id }}">
+            <div class="post">
+                <div class="top-line">
+                    <p class="title"> {{ task.title }} </p>
+                    <p class="coast">{{ task.coast  }} {{ task.currency }}</p>
+                </div>
+                <p class="about">{{ task.data_text|truncate(150) }}</p>
+                <div class="bottom-line">
+                    <p class="date"> {{ task.create_date.strftime("%H:%M %d/%m/%Y") }} </p>
+                    <div class="author">
+                        <p class="name">{{ task.author.name }}</p>
+                        <img class="avatar" src="{{ url_for('static', filename='avatars/' + task.author.login + '.webp') }}">
+                    </div>
+                </div>
+                {% if task.selected %}
+                    <div class="selected">
+                        <span> Исполнитель выбран</span>
+                    </div>
+                {% endif %}
+            </div>
+        </a>
+    {% endfor %}
+
+</div>
+{% endblock %}

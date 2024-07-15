@@ -95,7 +95,7 @@ def my_tasks(filter = None):
                 sa.select(PostRespond.post_id).where(PostRespond.author_id == current_user.id)
             )).order_by(Post.selected.desc(), Post.update_date.desc())
     
-    return render_template('tasks.html', tasks = list(db.session.scalars(query)), create_new = True, current_user=current_user, null_message='У вас нету обьявлений')
+    return render_template('post_list.html', tasks = list(db.session.scalars(query)), create_new = True, current_user=current_user, null_message='У вас нету обьявлений')
 
 @app.route('/')
 @app.route('/index')
@@ -107,7 +107,7 @@ def all_tasks(filter = None):
         .where(Post.selected == False)           \
         .where(Post.archived == False)                      \
         .order_by(Post.selected.desc(), Post.update_date.desc())
-    return render_template('tasks.html', tasks = list(db.session.scalars(query)), create_new = True, current_user=current_user, null_message='Сейчас на сайте обьявлений нет, приходите ещё')
+    return render_template('post_list.html', tasks = list(db.session.scalars(query)), create_new = True, current_user=current_user, null_message='Сейчас на сайте обьявлений нет, приходите ещё')
 
 @app.route('/')
 @app.route('/archive/')
@@ -117,7 +117,7 @@ def archive(filter = None):
         .where(Post.archived == True)                               \
         .where(sa.or_(Post.author_id == current_user.id, Post.selected_respond_author_id == current_user.id)) \
         .order_by(Post.selected.desc(), Post.update_date.desc())
-    return render_template('tasks.html', tasks = list(db.session.scalars(query)), create_new = False, title='Архив', current_user=current_user, null_message='В архиве пусто....')
+    return render_template('post_list.html', tasks = list(db.session.scalars(query)), create_new = False, title='Архив', current_user=current_user, null_message='В архиве пусто....')
 
 @app.route('/create-post/', methods=['GET', 'POST'])
 @app.route('/create-post',  methods=['GET', 'POST'])

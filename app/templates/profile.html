@@ -1,31 +1,28 @@
 {% extends 'base/base.html' %}
 
 {% block content %}
-<div class="sm:shadow sm:border p-5 rounded-xl flex flex-wrap sm:flex-nowrap flex-col sm:flex-row">
-    <div class="flex grow justify-center sm:grow-0">
-        <img
-            class="rounded size-[300px] shrink-0 shadow min-w-[300px]"
+<div class="profile card">
+        <img 
             src="{{ url_for('static', filename='avatars/'+user.login + '.webp') }}"
         >
-    </div>
-    <div class="flex flex-col sm:ml-5 grow">
-        <a class="text-4xl text-center sm:text-left mt-5 sm:mt-0">{{ user.name }}</a>
+    <div class="content">
+        <a class="username">{{ user.name }}</a>
         {% if user.account_type == "student" %}
-            <p class="mt-2">Оценка +209</p>
+            <p class="rep">Оценка +209</p>
         {% else %}
-        <div class="mt-8"></div>
+            <div class="rep-placeholder"></div>
         {% endif%}
-        <div class="p-2 bg-amber-100 mt-3 h-[205px] overflow-y-scroll whitespace-pre-wrap break-all font-mono"> {{ user.aboutme }} </div>
+        <div class="aboutme"><div class="scroll">{{ user.aboutme }}</div></div>
     </div>
 </div>
 
 
 {% if owner %}
-<div class="sm:shadow border mt-5 p-5 sm:rounded-xl flex space-x-2 flex-row flex-wrap">
-    <p class="flex text-xl mt-0 sm:mt-1 grow text-center justify-center sm:justify-start">Действия с вашем аккаунтом:</p>
-    <div class="shrink-0 flex space-x-2 mx-auto grow sm:grow-0 justify-center sm:justify-start mt-3 sm:mt-0">
-        <a class="rounded-lg px-10 shadow py-2 flex bg-black text-white justify-center cursor-pointer w-[130px] transition-all hover:sm:scale-105" href="/profile-editor" tabindex="0">Редактировать</a>
-        <a class="rounded-lg px-10 shadow py-2 flex bg-black text-white justify-center cursor-pointer w-[130px] transition-all hover:sm:scale-105" href="/logout" tabindex="0">Выйти</a>
+<div class="profile-actions card">
+    <p class="text">Действия с вашем аккаунтом:</p>
+    <div class="content">
+        <a class="button" href="/profile-editor" tabindex="0">Редактировать</a>
+        <a class="button" href="/logout" tabindex="0">Выйти</a>
     </div>
 </div>
 {% endif %}

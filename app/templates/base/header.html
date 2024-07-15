@@ -1,30 +1,22 @@
-<style>
-  .dropdown-content{
-    display: none;
-  }
-  .dropdown:hover .dropdown-content{
-    display: block;
-  }
-</style>
-<nav class="flex justify-between flex-wrap p-6 shadow sm:h-fit h-0 sm:visible collapse fixed w-full bg-white/20 z-50 backdrop-blur-sm">
-    <div class="container mx-auto flex flex-wrap justify-center max-w-5xl">
-      <div class="flex justify-items-center">
-        <a class="flex font-semibold text-3xl tracking-tight" href="/"> MicroFreelance</a><span class="text-lg text-white bg-black ml-1 p-1">[{{current_user.account_type}}]</span>
+<nav class="nav-desktop">
+    <div class="content">
+      <div class="logo">
+        <a href="/"> MicroFreelance</a>
+        <span class="account-type">[{{current_user.account_type}}]</span>
       </div>
-      <div class="grow"></div>
-      <div class="flex justify-items-center text-center place-items-center relative">
-          <a class="mx-4 flex" href="/all-tasks"> Все заявки </a>
-          <a class="mx-4 flex" href="/my-tasks">  Мои заявки </a>
+      <div class="tabs">
+          <a class="tab" href="/all-tasks"> Все заявки </a>
+          <a class="tab" href="/my-tasks">  Мои заявки </a>
           <div class="dropdown">
-            <a class="mx-4 flex " href="/login">   Мой Аккаунт</a>
+            <a class="tab" href="/login">   Мой Аккаунт</a>
             {% if current_user.is_authenticated %}
-              <div class="absolute text-center w-32 dropdown-content">
-                <div class="flex flex-col mt-2 bg-white border rounded-xl shadow"> 
-                  <a href="/archive" class="p-3">Архив</a>
+              <div class="dropdown-content">
+                <div class="menu"> 
+                  <a href="/archive" class="archive"> Архив</a>
                   {% if current_user.account_type == "admin" %}
-                    <a href="/admin" class="p-3 bg-black text-white">Админка</a>
+                    <a href="/admin" class="admin">   Админка</a>
                   {% endif %}
-                  <a href="/logout" class="p-3 bg-red-600 overflow-hidden rounded-b-xl text-white border-1">Выйти</a>
+                  <a href="/logout" class="logout">   Выйти</a>
                 </div>
               </div>
             {% endif %}
@@ -33,24 +25,21 @@
   </div>
 </nav>
 
-<div class="sm:h-24 h-0 sm:visible collapse">
 
+<div class="mobile-logo vibrate" >
+  <a>MicroFreelance</a>
 </div>
 
-<div class="w-full flex justify-center sm:m-0 sm:h-0 mt-5">
-  <a class="text-4xl sm:collapse visible text-center flex z-50">MicroFreelance</a>
-</div>
-
-<nav class="bottom-0 left-0 right-0 w-full fixed sm:collapse visible flex text-center p-6 bg-white/60 backdrop-blur-sm border-t z-50 border-black">
-  <div class="w-full flex justify-stretch divide-x divide-black">
-    <div class="flex grow">
-      <a  href="/all-tasks" class="mx-auto">Все заявки </a>
+<nav class="nav-mobile">
+  <div class="content">
+    <div class="tab vibrate">
+      <a  href="/all-tasks">Все заявки </a>
     </div>
-    <div class="flex grow">
-      <a href="/my-tasks" class="mx-auto">  Мои заявки </a>
+    <div class="tab vibrate">
+      <a href="/my-tasks">  Мои заявки </a>
     </div>
-    <div class="flex grow">
-      <a href="/login" class="mx-auto">     Мой Аккаунт</a>
+    <div class="tab vibrate">
+      <a href="/login">     Мой Аккаунт</a>
     </div>
   </div>
 </nav>

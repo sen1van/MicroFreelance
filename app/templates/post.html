@@ -4,21 +4,21 @@
 <link href="{{ url_for('static', filename='post_editor/quill.snow.css') }}" rel="stylesheet" />
 
 {% if data.archived %}
-<div class="bg-orange-200 w-full mt-4 p-5 border sm:rounded-xl text-lg font-semibold shadow">
+<div class="card archived-title">
     Обьявление закрыто {{data.archived_date}}
     {% if data.selected %}, исполнитель выбран
-    {% else %}, <span class="underline">исполнитель не выбран</span>
+    {% else %}, <u>исполнитель не выбран</u>
     {% endif %}
 </div>
 {% endif %}
 
 <form method="POST" enctype='multipart/form-data'>
     
-    <div class="mt-5 p-5 border-t sm:border sm:rounded-2xl sm:shadow">
+    <div class="card post-card">
         {% if edit %}
         {{ form.hidden_tag() }}
-            <div class="font-semibold text-2xl"> 
-                {{ form.title(placeholder='Введите заголовок', class="shadow border p-4 rounded-xl w-full", value=data.title) }} 
+            <div class="title"> 
+                {{ form.title(placeholder='Введите заголовок', class='title-edit', value=data.title) }} 
             </div>
         {% else %}
         <div class="relative ">
@@ -27,44 +27,42 @@
                 <img src="/static/icons/edit.svg" class="size-10">
             </a>
             {% endif %}
-            <div class="font-semibold text-2xl px-4 break-all"> 
+            <div class="title"> 
                 {{data.title}}
             </div>
         </div>
         {% endif %}
 
-        <div class="mt-5 shrink-0 relative">
+        <div class="user">
             {% if edit %}
-                <a class="flex flex-nowrap grow-0 shrink-0 ml-3">
+                <a class="link">
             {% else %}
-                <a href="/profile/{{data.author.login}}" class="flex flex-nowrap grow-0 shrink-0 ml-3">
+                <a href="/profile/{{data.author.login}}" class="link">
             {% endif %}
-                <img class="size-20 rounded-xl" src="{{ url_for('static', filename='avatars/'+data.author.login + '.webp') }}">
-                <div class="grid content-center">
-                    <p class="text-xl ml-2">{{ data.author.name }}</p>
+                <img class="avatar" src="{{ url_for('static', filename='avatars/'+data.author.login + '.webp') }}">
+                <div class="name">
+                    <p> {{ data.author.name }} </p>
                 </div>
             </a>
         </div>
 
-        <div class="flex-col relative">
-            <div class="text-right mr-2 sm:text-xl sm:-mt-7">
+        <div class="coast">
                 
                 {% if edit %}
-                    <p class="ml-5"><span class="text-gray-500">Оплата:</span> {{ form.coast(class='text-xl w-40 shadow p-2 rounded-md', placeholder='Зарплата', value=data.coast) }} {{ form.currency(value=data.currency, class='w-20 shadow p-2 rounded-md') }} </p>
+                    <p><span>Оплата:</span> {{ form.coast(class='coast-edit', placeholder='Зарплата', value=data.coast) }} {{ form.currency(value=data.currency, class='currency-edit') }} </p>
                 {% else %}
-                    <p class="ml-5"><span class="text-gray-500">Оплата:</span> <span class="text-xl sm:text-3xl">{{ data.coast }}</span> {{ data.currency }} </p>
+                    <p><span>Оплата:</span> {{ data.coast }} {{ data.currency }} </p>
                 {% endif %}
-            </div>
         </div>
-        <div class="mt-4">
+        <div class="editor">
             {% if edit %}
                 {{ form.data(style="display:none;", id='data') }}
                 {{ form.data_text(style="display:none;", id='data_text') }}
-                <div class="w-full border rounded-xl h-96 mt-5 resize-none p-2 shadow" id="editor">
+                <div class="editor-body" id="editor">
                     {{ data.data|safe }}
                 </div>
             {% else %}
-                <div class="ql-container ql-snow ql-editor bg-gray-100 rounded-xl">{{ data.data|safe }}</div>
+                <div class="ql-container ql-snow ql-editor info">{{ data.data|safe }}</div>
             {% endif %}
             {% if edit %}
                 <!-- Include the Quill library -->

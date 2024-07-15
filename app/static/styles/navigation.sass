@@ -1,0 +1,105 @@
+.nav-desktop
+    display: none
+    border-bottom: 1px solid
+    padding: 24px
+    position: fixed
+    width: 100%
+    z-index: 50
+    background-color: rgb(255 255 255 / 0.2)
+    backdrop-filter: blur(4px)
+    .content
+        justify-content: space-between
+        display: flex
+        flex-wrap: wrap
+        margin-inline: auto
+        width: 100%
+        max-width: 1024px
+        .logo
+            letter-spacing: -0.025em
+            font-size: 30px
+            line-height: 36px
+            font-weight: 600
+            display: flex
+            .account-type
+                font-weight: 400
+                padding: 4px
+                margin-left: 4px
+                background-color: $primary-color
+                color: $bg-color
+                font-size: 18px
+                line-height: 28px
+    .tabs
+        display: flex
+        place-items: center
+        .tab
+            margin-inline: 16px
+        .dropdown-content
+            display: none
+            width: 128px
+            text-align: center
+            position: absolute
+            .menu
+                border: 1px solid
+                border-radius: 20px
+                display: flex
+                flex-direction: column
+                margin-top: 8px
+                overflow: hidden
+                .archive
+                    padding: 12px
+                    background-color: $bg-color
+                .admin
+                    padding: 12px
+                    background-color: $primary-color
+                    color: $bg-color
+                .logout
+                    padding: 12px
+                    background-color: $danger-color
+                    color: $bg-color
+        .dropdown:hover 
+            .dropdown-content
+                display: block
+            .outline
+                display: block
+@media (min-width: $small-width)
+    .nav-desktop
+        display: flex
+
+
+
+.mobile-logo
+    width: 100%
+    display: flex
+    justify-content: center
+    margin-top: 20px
+    z-index: 50
+    text-align: center
+    font-size: 36px
+
+.nav-mobile
+    z-index: 50
+    border-top: 1px solid
+    position: fixed
+    bottom: 0px
+    left: 0px
+    right: 0px
+    width: 100%
+    text-align: center
+    padding: 24px
+    background-color: rgb(255 255 255 / 0.8)
+    backdrop-filter: blur(4px)
+    .content
+        width: 100%
+        display: flex
+        justify-content: stretch
+        .tab
+            flex-grow: 1
+
+@media (min-width: $small-width)
+    .nav-mobile
+        margin: 0
+        display: none
+    .mobile-logo
+        margin: 0
+        a
+            display: none

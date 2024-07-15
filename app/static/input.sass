@@ -1,0 +1,59 @@
+
+@font-face
+    font-family: 'Roboto'
+    font-style: normal
+    font-weight: 400
+    font-display: swap
+    src: url('/static/Roboto-Regular.ttf') format('truetype')
+
+$bg-color: #fff
+$primary-color: #000
+$text-color: $primary-color
+
+$danger-color: rgb(220 38 38)
+
+
+$small-width: 640px
+
+
+body
+    font: 100% Roboto
+    color: $primary-color
+
+.container-
+    width: 100%
+    max-width: 1024px
+    margin-inline: auto
+    padding-bottom: 80px
+    @media (min-width: $small-width)
+        margin-top: 136px
+
+.card
+    padding: 20px
+    @media (min-width: $small-width)
+        border: 1px solid
+        box-shadow: 3px 3px 0px $text-color
+        border-radius: 20px
+
+.button
+    border-radius: 8px
+    text-align: center
+    padding: 8px
+    background-color: $primary-color
+    color: $bg-color
+    cursor: pointer
+    @media (min-width: $small-width)
+        transition: all 70ms
+        &:hover
+            scale: 105%
+    &-danger
+        background-color: $danger-color
+    &-action
+        @extend .button
+    
+
+@import 'styles/navigation'
+@import 'styles/profile'
+@import 'styles/post_list'
+@import 'styles/post'
+        

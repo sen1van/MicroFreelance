@@ -1,0 +1,91 @@
+.list
+    border-bottom: 1px solid
+    @media (min-width: $small-width)
+        border-bottom: 0px
+    .create_post
+        .post
+            margin-top: 24px
+            background-color: $bg-color
+            text-align: center
+            .icon
+                margin-inline: auto
+                width: 24px
+                height: 24px
+    .list_title
+        text-align: center
+        font-size: 32px
+        margin-inline: auto
+        margin-bottom: 28px
+    .null_message
+        margin-top: 200px
+        text-align: center
+        font-size: 28px
+        opacity: 50%
+        @media (min-width: $small-width)
+            font-size: 32px
+    .post
+        
+        background: $bg-color
+        border-color: $text-color
+        margin-inline: auto
+        width: 100%
+        text-align: center
+        padding: 8px
+        color: $text-color
+        cursor: pointer
+        padding: 20px
+        border-top: 1px solid
+        @media (min-width: $small-width)
+            margin-bottom: 12px
+            margin-top: 12px
+            border: 1px solid
+            border-radius: 8px
+            box-shadow: 3px 3px 0px $text-color
+            transition: all 70ms
+            width: 4/6 * 100%
+            &:hover
+                translate: -3px -3px
+                box-shadow: 8px 8px 0px $text-color
+        p
+            text-align: left
+        .top-line
+            display: flex
+            .title
+                font-weight: 600
+                font-size: 20px
+                flex-grow: 1
+                word-break: break-all
+            .coast
+                font-weight: 600
+                font-size: 20px
+                flex-grow: 0
+                flex-shrink: 0
+        .about
+            min-height: 64px
+            overflow: hidden
+            white-space: pre-wrap
+            word-break: break-all
+            margin-top: 8px
+            width: 100%
+        .bottom-line
+            display: flex
+            margin-top: 16px
+            .date
+                flex-grow: 1
+            .author
+                display: flex
+                flex-shrink: 0
+                .name
+                    margin-right: 8px
+                    flex-shrink: 0
+                .avatar
+                    width: 24px
+                    height: 24px
+                    border-radius: 100%
+                    margin-top: -4px
+        .selected
+            margin-top: 12px
+            color: $bg-color
+            background-color: $text-color
+            text-align: center
+            border-radius: 5px

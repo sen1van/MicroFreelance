@@ -1,0 +1,103 @@
+.profile
+    display: flex
+    flex-wrap: wrap
+    flex-direction: column
+    @media (min-width: $small-width)
+        flex-wrap: nowrap
+        flex-direction: row
+    img
+        width: 300px
+        height: 300px
+        border-radius: 5px
+        flex-grow: 0
+        margin-inline: auto
+    .ava-edit
+        display: flex
+        flex-grow: 1
+        justify-content: center
+        position: relative
+        @media (min-width: $small-width)
+            flex-grow: 0
+        img
+            filter: brightness(50%)
+        .button-action
+            position: absolute
+            padding: 20px
+            background-color: rgb(0 0 0 / 20%)
+            backdrop-filter: blur(2px)
+            height: 62px
+            z-index: 50
+            top: calc(300px / 2 - 31px)
+    .content
+        display: flex
+        flex-direction: column
+        flex-grow: 1
+        @media (min-width: $small-width)
+            margin-left: 20px
+            max-height: 300px
+        .username
+            font-size: 36px
+            text-align: center
+            margin-top: 20px
+            @media (min-width: $small-width)
+                text-align: left
+                margin-top: 0px
+        .rep
+            margin-top: 8px
+        .rep-placeholder
+            margin-top: 32px
+        .aboutme
+            margin-top: 12px
+            border: 1px solid
+            border-radius: 5px
+            height: 100%
+            overflow: hidden 
+            min-height: 196px
+            max-height: 300px
+            .scroll
+                max-height: 300px
+                word-break: break-all
+                padding: 8px
+                scrollbar-width: thin
+                scrollbar-color: $primary-color $bg-color
+                white-space: pre-wrap
+                height: 100%
+                width: 100%
+                overflow-y: scroll
+    input
+        width: 100%
+
+.profile-actions
+    border-top: 1px solid
+    border-bottom: 1px solid
+    margin-top: 20px
+    padding: 20px
+    display: flex
+    flex-wrap: wrap
+    .text
+        font-size: 20px
+        display: flex
+        flex-grow: 1
+        text-align: center
+        justify-content: center
+        @media (min-width: $small-width)
+            justify-content: start
+            margin-top: 5px
+    .content
+        display: flex
+        flex-shrink: 0
+        margin-inline: auto
+        justify-content: center
+        margin-top: 12px
+        @media (min-width: $small-width)
+            margin-top: 0px
+        .button
+            margin-inline: 5px
+            width: 128px
+            @media (min-width: $small-width)
+                margin-left: 10px
+                margin-right: -5px
+
+.edit
+    .button
+        width: 100%
