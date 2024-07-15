@@ -28,7 +28,8 @@ def login():
         flash(['Вы успешно вошли', 'green'])
         login_user(user, remember=True)
         return redirect(url_for('profile'))
-
+    if form.submit():
+        flash([form.errors, 'red'])
     return render_template('login.html', form=form, current_user=current_user)
 
 @app.route('/logout')
