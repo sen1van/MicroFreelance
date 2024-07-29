@@ -8,6 +8,7 @@
 body {
   font: 100% Roboto;
   color: #000;
+  overscroll-behavior: none;
 }
 
 .container- {
@@ -52,6 +53,17 @@ body {
 .button-danger {
   background-color: rgb(220, 38, 38);
 }
+.spacer {
+  flex-grow: 0;
+  display: none;
+}
+@media (min-width: 640px) {
+  .spacer {
+    flex-grow: 1;
+    display: flex;
+  }
+}
+
 .nav-desktop {
   display: none;
   border-bottom: 1px solid;
@@ -443,8 +455,6 @@ body {
 
 .post-card {
   margin-top: 20px;
-  font-weight: 600;
-  font-size: 24px;
 }
 .post-card input {
   border: 1px solid;
@@ -452,16 +462,23 @@ body {
   padding: 10px;
 }
 .post-card .title-edit {
+  font-weight: 600;
   width: 100%;
 }
 .post-card .coast-edit {
   width: 160px;
+  border-radius: 20px 0px 0px 20px;
   text-align: right;
+  margin-right: 0px;
+  border-right: 0px;
 }
 .post-card .currency-edit {
   width: 160px;
+  border-radius: 0px 20px 20px 0px;
+  margin-left: 0px;
 }
 .post-card .title {
+  font-size: 24px;
   padding-inline: 12px;
   word-break: break-all;
 }
@@ -493,11 +510,19 @@ body {
 .post-card .coast {
   position: relative;
   text-align: right;
-  margin-right: 8px;
+  align-items: right;
+  align-items: right;
+  justify-content: right;
+  word-wrap: none;
+  white-space: nowrap;
+  display: flex;
+  flex-wrap: 0;
+  margin-top: 4px;
 }
 @media (min-width: 640px) {
   .post-card .coast {
     font-size: 20px;
+    margin-right: 8px;
     margin-top: -28px;
   }
 }
@@ -516,6 +541,50 @@ body {
   border: 1px solid;
   border-radius: 10px;
   padding: 10px;
+}
+.post-card .edit-button {
+  border-radius: 10px;
+  border: 1px solid;
+  text-align: center;
+  justify-content: center;
+  display: grid;
+  align-content: center;
+  position: absolute;
+  right: 12px;
+  top: 4px;
+  width: 64px;
+  height: 64px;
+  z-index: 20;
+  box-shadow: 3px 3px 0px #000;
+  background-color: #fff;
+}
+@media (min-width: 640px) {
+  .post-card .edit-button {
+    transition: all 70ms;
+  }
+  .post-card .edit-button:hover {
+    box-shadow: 0px 0px 0px #000;
+    translate: 3px 3px;
+  }
+}
+.post-card .edit-button img {
+  width: 40px;
+  height: 40px;
+}
+.post-card .edit-actions {
+  margin-top: 20px;
+  display: flex;
+}
+.post-card .edit-actions .button, .post-card .edit-actions .button-action {
+  padding: 12px;
+  width: 100%;
+  margin-inline: 4px;
+}
+@media (min-width: 640px) {
+  .post-card .edit-actions .button, .post-card .edit-actions .button-action {
+    margin-right: 20px;
+    width: 128px;
+  }
 }
 
 /*# sourceMappingURL=output.css.map */

@@ -19,6 +19,7 @@ $small-width: 640px
 body
     font: 100% Roboto
     color: $primary-color
+    overscroll-behavior: none
 
 .container-
     width: 100%
@@ -51,6 +52,12 @@ body
     &-action
         @extend .button
     
+.spacer
+    flex-grow: 0
+    display: none
+    @media (min-width: $small-width)
+        flex-grow: 1
+        display: flex
 
 @import 'styles/navigation'
 @import 'styles/profile'

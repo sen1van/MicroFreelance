@@ -23,8 +23,8 @@
         {% else %}
         <div class="relative ">
             {% if current_user.is_authenticated and data.author.id == current_user.id and not data.archived and not data.selected %}
-            <a class="rounded-xl text-center justify-center grid content-center absolute right-3 top-1 backdrop-blur-sm size-16 border-gray-900 border shadow-md transition hover:rotate-6 hover:scale-125 hover:shadow-xl z-20" href="/edit-post/{{data.id}}">
-                <img src="/static/icons/edit.svg" class="size-10">
+            <a class="edit-button" href="/edit-post/{{data.id}}">
+                <img src="/static/icons/edit.svg">
             </a>
             {% endif %}
             <div class="title"> 
@@ -49,7 +49,7 @@
         <div class="coast">
                 
                 {% if edit %}
-                    <p><span>Оплата:</span> {{ form.coast(class='coast-edit', placeholder='Зарплата', value=data.coast) }} {{ form.currency(value=data.currency, class='currency-edit') }} </p>
+                    <p><span>Оплата:</span> {{ form.coast(class='coast-edit', placeholder='Зарплата', value=data.coast) }}{{ form.currency(value=data.currency, class='currency-edit') }} </p>
                 {% else %}
                     <p><span>Оплата:</span> {{ data.coast }} {{ data.currency }} </p>
                 {% endif %}
@@ -80,19 +80,20 @@
                         }
                 });
                 </script>
-                <div class="flex">
-                    <div class="grow w-0 h-0 hidden sm:w-full sm:h-2 sm:flex"></div>
+
+                <div class="edit-actions">
+                    <div class="spacer"></div>
                     {% if not data.new_post %}
                         <a 
                             href="/archiving-post/{{data.id}}"
-                            class="shadow shadow-black border border-red-600 bg-red-600 text-white p-5 mr-5 rounded-xl mt-5 w-full sm:w-44 text-center cursor-pointer transition-all hover:sm:scale-105"
+                            class="button button-danger"
                         >
                             Удалить
                         </a>
                     {% endif %}
                     <a 
                         onclick="getElementById('data').value = quill.getSemanticHTML(); getElementById('data_text').value = quill.getText().replaceAll('\n', ' '); getElementById('submit').click();"
-                        class="shadow shadow-black border border-black bg-black text-white p-5 rounded-xl mt-5 w-full sm:w-44 text-center cursor-pointer transition-all hover:sm:scale-105"
+                        class="button-action"
                     >
                         Завершить
                     </a>

@@ -5,20 +5,26 @@
 
 .post-card
     margin-top: 20px
-    font-weight: 600
-    font-size: 24px
+
     input
         border: 1px solid
         border-radius: 10px
         padding: 10px
     .title-edit
+        font-weight: 600
         width: 100%
     .coast-edit
         width: 160px
+        border-radius: 20px 0px 0px 20px
         text-align: right
+        margin-right: 0px
+        border-right: 0px
     .currency-edit
         width: 160px
+        border-radius: 0px 20px 20px 0px
+        margin-left: 0px
     .title
+        font-size: 24px
         padding-inline: 12px
         word-break: break-all
     .user
@@ -44,9 +50,17 @@
     .coast
         position: relative
         text-align: right
-        margin-right: 8px
+        align-items: right
+        align-items: right
+        justify-content: right
+        word-wrap: none
+        white-space: nowrap
+        display: flex
+        flex-wrap: 0
+        margin-top: 4px
         @media (min-width: $small-width)
             font-size: 20px
+            margin-right: 8px
             margin-top: -28px
         span
             color: rgb(107 114 128)
@@ -61,3 +75,37 @@
             border: 1px solid
             border-radius: 10px
             padding: 10px
+    .edit-button
+        border-radius: 10px
+        border: 1px solid
+        text-align: center
+        justify-content: center
+        display: grid
+        align-content: center
+        position: absolute
+        right: 12px
+        top: 4px
+        // backdrop-filter: blur(4px)
+        width: 64px
+        height: 64px
+        z-index: 20
+        box-shadow: 3px 3px 0px $text-color
+        background-color: $bg-color
+        @media (min-width: $small-width)
+            transition: all 70ms
+            &:hover
+                box-shadow: 0px 0px 0px $text-color
+                translate: 3px 3px
+        img
+            width: 40px
+            height: 40px
+    .edit-actions
+        margin-top: 20px
+        display: flex
+        .button
+            padding: 12px
+            width: 100%
+            margin-inline: 4px
+            @media (min-width: $small-width)
+                margin-right: 20px
+                width: 128px
