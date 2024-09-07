@@ -23,8 +23,12 @@
             <div class="aboutme"> {{ form.aboutme(size=0, style="resize: none;", class="scroll") }} </div>
         </div>
     </div>
-    <div class="profile-actions card edit">
-        {{ form.submit(class="button", tabindex="0") }}
+    <div class="card settings">
+        <div class="content">
+            <span>Контактные данные:</span>
+            <div class="contacts"> {{ form.contact_info(size=0, style="resize: none;", class="scroll") }} </div>
+        </div>
+        {{ form.submit(class="button button-finish", tabindex="0") }}
     </div>
 </form>
 {% endblock %}

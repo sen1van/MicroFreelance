@@ -3,17 +3,20 @@
 
 {% block content %}
 
-<div class='sm:shadow rounded-xl sm:border max-w-md mx-auto mt-20'>
+<div class='card login'>
   <form action="" method="post" novalidate>
-    <div class="flex flex-col p-5 ">
-      <a class="text-3xl mx-auto">Вход в систему</a>
+    <div class="content">
+      <a class="title">Вход в систему</a>
       {{ form.hidden_tag() }}
-      <a class="text-xl mx-1 mt-5 mb-1">{{ form.login.label }}</a>
-      {{ form.login(size=32, class="px-2 py-3 rounded-lg border border-black shadow") }}
-      <a class="text-xl mx-1 mt-5 mb-1">{{ form.password.label }}</a>
-      {{ form.password(size=32, class="px-2 py-3 rounded-lg border border-black shadow") }}
-      {{ form.submit(class="rounded-lg px-10 shadow py-2 flex bg-black text-white font-semibold mt-8 justify-center cursor-pointer") }}
+      <a class="label">{{ form.login.label}}</a>
+      {{ form.login(size=32, class="text-input", placeholder='Логин') }}
+      <a class="label">{{ form.password.label }}</a>
+      {{ form.password(size=32, class="text-input", placeholder='Пароль') }}
+      {{ form.submit(class="button") }}
+      <a href="/register" class="reg">Нет аккаунта? <span class="click">Зарегестрируйтесь!</span></a>
     </div>
   </form>
 </div>
+
+
 {% endblock %}

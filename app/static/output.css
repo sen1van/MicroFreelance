@@ -53,6 +53,12 @@ body {
 .button-danger {
   background-color: rgb(220, 38, 38);
 }
+.button-sub {
+  border: solid 1px;
+  color: #000;
+  background-color: #fff;
+  border-color: #000;
+}
 .spacer {
   flex-grow: 0;
   display: none;
@@ -326,7 +332,41 @@ body {
   }
 }
 
-.edit .button, .edit .button-action {
+.settings {
+  margin-top: 20px;
+}
+.settings .content {
+  display: flex;
+  flex-shrink: 0;
+  justify-content: left;
+  margin-inline: auto;
+  margin-top: 12px;
+}
+@media (min-width: 640px) {
+  .settings .content {
+    margin-top: 0px;
+  }
+}
+.settings .contacts {
+  border: 1px solid;
+  border-radius: 5px;
+  width: 100%;
+  overflow: hidden;
+  height: 196px;
+}
+.settings .contacts .scroll {
+  max-height: 300px;
+  word-break: break-all;
+  padding: 8px;
+  scrollbar-width: thin;
+  scrollbar-color: #000 #fff;
+  white-space: pre-wrap;
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll;
+}
+.settings .button-finish {
+  margin-top: 20px;
   width: 100%;
 }
 
@@ -467,14 +507,14 @@ body {
 }
 .post-card .coast-edit {
   width: 160px;
-  border-radius: 20px 0px 0px 20px;
+  border-radius: 10px 0px 0px 10px;
   text-align: right;
   margin-right: 0px;
   border-right: 0px;
 }
 .post-card .currency-edit {
   width: 160px;
-  border-radius: 0px 20px 20px 0px;
+  border-radius: 0px 10px 10px 0px;
   margin-left: 0px;
 }
 .post-card .title {
@@ -510,7 +550,6 @@ body {
 .post-card .coast {
   position: relative;
   text-align: right;
-  align-items: right;
   align-items: right;
   justify-content: right;
   word-wrap: none;
@@ -585,6 +624,49 @@ body {
     margin-right: 20px;
     width: 128px;
   }
+}
+
+.login {
+  max-width: 450px;
+  margin-top: 128px;
+  margin-inline: auto;
+}
+.login .content {
+  display: flex;
+  flex-direction: column;
+}
+.login .content .title {
+  font-size: 30px;
+  margin-inline: auto;
+  text-align: center;
+}
+.login .content .label {
+  font-size: 20px;
+  margin-top: 20px;
+  margin-bottom: 4px;
+  margin-left: 4px;
+}
+.login .content .text-input {
+  padding-inline: 8px;
+  padding-block: 12px;
+  border-radius: 8px;
+  border: 1px solid;
+}
+.login .content .button, .login .content .button-action {
+  margin-top: 28px;
+}
+.login .content .reg {
+  margin-top: 28px;
+  text-align: center;
+  margin-inline: auto;
+  width: fit;
+  padding-left: 8px;
+}
+.login .content .reg .click {
+  background: #000;
+  padding: 8px;
+  color: white;
+  border-radius: 8px;
 }
 
 /*# sourceMappingURL=output.css.map */

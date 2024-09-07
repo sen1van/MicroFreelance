@@ -98,6 +98,32 @@
                 margin-left: 10px
                 margin-right: -5px
 
-.edit
-    .button
+.settings
+    margin-top: 20px
+    .content
+        display: flex
+        flex-shrink: 0
+        justify-content: left
+        margin-inline: auto
+        margin-top: 12px
+        @media (min-width: $small-width)
+            margin-top: 0px
+    .contacts
+        border: 1px solid
+        border-radius: 5px
+        width: 100%
+        overflow: hidden 
+        height: 196px
+        .scroll
+            max-height: 300px
+            word-break: break-all
+            padding: 8px
+            scrollbar-width: thin
+            scrollbar-color: $primary-color $bg-color
+            white-space: pre-wrap
+            height: 100%
+            width: 100%
+            overflow-y: scroll
+    .button-finish
+        margin-top: 20px
         width: 100%

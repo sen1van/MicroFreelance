@@ -4,6 +4,7 @@ import sqlalchemy as sa
 from sqlalchemy.sql import func
 from wand.image import Image
 import datetime
+import utils
 
 import fish
 from app import app
@@ -31,6 +32,13 @@ def login():
     if form.submit():
         flash([form.errors, 'red'])
     return render_template('login.html', form=form, current_user=current_user)
+
+@app.route('/register/', methods=['GET', 'POST'])
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegisterForm()
+    return render_template('register.html', form=form)
+
 
 @app.route('/logout')
 def logout():
@@ -64,8 +72,9 @@ def profile_editor():
         user = db.session.scalar( sa.select(User).where(User.id == current_user.id) )
         user.name = form.name.data
         user.aboutme = form.aboutme.data
+        user.contact_info = form.contact_info.data
+        print(form.contact_info.data)
         db.session.commit()
-        print(form.photo.data, 123)
         if form.photo.data:
             with Image(blob=form.photo.data) as img:
                 img.format = 'webp'
@@ -76,6 +85,7 @@ def profile_editor():
     if request.method == 'POST' and not form.validate():
         flash(['Произошла ошибка, возможно ошибка заполнения', 'red'])
     form.aboutme.data = current_user.aboutme
+    form.contact_info.data = current_user.contact_info
     return render_template('profile_editor.html', current_user=current_user, form=form)
 
 

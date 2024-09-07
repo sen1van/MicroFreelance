@@ -1,0 +1,24 @@
+{% extends "base/base.html" %}
+
+
+{% block content %}
+
+<div class='card login'>
+  <form action="" method="post" novalidate>
+    <div class="content">
+      <a class="title">Регистрация пользователя</a>
+      <a class="label">Код</a>
+      {{ form.code(size=32, class="text-input", placeholder='Код учителя') }}
+      <a class="label">ФИО</a>
+      {{ form.name(size=32, class="text-input", placeholder='Введите свое ФИО') }}
+      <a class="label">Логин</a>
+      {{ form.login(size=32, class="text-input", placeholder='Логин') }}
+      <a class="label">Пароль</a>
+      {{ form.password(size=32, class="text-input", placeholder='Пароль') }}
+      {{ form.submit(class="button") }}
+    </div>
+  </form>
+</div>
+
+
+{% endblock %}

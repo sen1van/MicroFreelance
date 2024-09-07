@@ -9,9 +9,17 @@ class LoginForm(FlaskForm):
     password = PasswordField('Пароль', validators=[DataRequired()])
     submit = SubmitField('Войти')
 
+class RegisterForm(FlaskForm):
+    code = StringField('Код', validators=[DataRequired()])
+    name = StringField('ФИО', validators=[DataRequired()])
+    login = StringField('Логин', validators=[DataRequired()])
+    password = PasswordField('Пароль', validators=[DataRequired()])
+    submit = SubmitField('Завершить')
+
 class ProfileEditorForm(FlaskForm):
     name = StringField('Имя', validators=[DataRequired()])
     aboutme = TextAreaField('Обомне', validators=[DataRequired()])
+    contact_info = TextAreaField('contact_info')
     photo = FileField('image', validators=[FileAllowed(['jpg', 'png', 'webp', 'gif'], 'Images only!')])
     submit = SubmitField('Завершить')
 
