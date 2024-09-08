@@ -6,6 +6,7 @@
 <div class='card login'>
   <form action="" method="post" novalidate>
     <div class="content">
+      {{ form.hidden_tag() }}
       <a class="title">Регистрация пользователя</a>
       <a class="label">Код</a>
       {{ form.code(size=32, class="text-input", placeholder='Код учителя') }}

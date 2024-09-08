@@ -86,6 +86,8 @@
     .content
         display: flex
         flex-shrink: 0
+        max-width: 100%
+        flex-flow: row wrap
         margin-inline: auto
         justify-content: center
         margin-top: 12px
@@ -97,6 +99,11 @@
             @media (min-width: $small-width)
                 margin-left: 10px
                 margin-right: -5px
+        .new-line
+            @media (min-width: $small-width)
+                margin-top: 0px
+            margin-top: 12px
+            width: 266px
 
 .settings
     margin-top: 20px

@@ -23,6 +23,9 @@
     <div class="content">
         <a class="button" href="/profile-editor" tabindex="0">Редактировать</a>
         <a class="button button-danger" href="/logout" tabindex="0">Выйти</a>
+        {% if user.account_type in ['admin', 'teacher'] %}
+            <a class="button new-line" href="/reg-code" tabindex="0">Код регистрации</a>
+        {% endif %}
     </div>
 </div>
 {% endif %}

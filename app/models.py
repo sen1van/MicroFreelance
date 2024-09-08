@@ -69,3 +69,12 @@ class PostRespond(db.Model):
 
     author: Mapped["User"] = relationship()
     post: Mapped["Post"] = relationship()
+
+class RegCode(db.Model):
+    __table_name__ = "reg_code"
+
+    id: Mapped[int]                         = mapped_column(primary_key=True)
+    code: Mapped[str]                       = mapped_column(String(256))
+    author_id: Mapped[int]                  = mapped_column(ForeignKey(User.id), nullable=False)
+    used_id: Mapped[int]                    = mapped_column(ForeignKey(User.id), nullable=True)
+    create_date: Mapped[datetime.datetime]  = mapped_column(DateTime(timezone=True), server_default=func.now())

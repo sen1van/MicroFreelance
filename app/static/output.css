@@ -312,6 +312,8 @@ body {
 .profile-actions .content {
   display: flex;
   flex-shrink: 0;
+  max-width: 100%;
+  flex-flow: row wrap;
   margin-inline: auto;
   justify-content: center;
   margin-top: 12px;
@@ -329,6 +331,15 @@ body {
   .profile-actions .content .button, .profile-actions .content .button-action {
     margin-left: 10px;
     margin-right: -5px;
+  }
+}
+.profile-actions .content .new-line {
+  margin-top: 12px;
+  width: 266px;
+}
+@media (min-width: 640px) {
+  .profile-actions .content .new-line {
+    margin-top: 0px;
   }
 }
 
@@ -667,6 +678,12 @@ body {
   padding: 8px;
   color: white;
   border-radius: 8px;
+}
+
+.reg-code {
+  font-size: 72px;
+  text-align: center;
+  margin-top: 30vh;
 }
 
 /*# sourceMappingURL=output.css.map */

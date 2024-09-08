@@ -5,6 +5,7 @@ from sqlalchemy.sql import func
 from wand.image import Image
 import datetime
 import utils
+import random
 
 import fish
 from app import app
@@ -29,15 +30,62 @@ def login():
         flash(['Вы успешно вошли', 'green'])
         login_user(user, remember=True)
         return redirect(url_for('profile'))
-    if form.submit():
-        flash([form.errors, 'red'])
     return render_template('login.html', form=form, current_user=current_user)
 
 @app.route('/register/', methods=['GET', 'POST'])
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('profile', login = current_user.login))
     form = RegisterForm()
+
+    if form.validate_on_submit():
+        code = db.session.scalar( sa.select(RegCode).where(RegCode.code == form.code.data) )
+        if code == None:
+            flash(['Код не найден', 'red'])
+            return redirect(url_for('register'))
+        if code.create_date < datetime.datetime.utcnow() - datetime.timedelta(minutes=Config.code_ttl):
+            flash(['Код устарел', 'red'])
+            return redirect(url_for('register'))
+        if code.used_id != None:
+            flash(['Код уже используется', 'red'])
+            return redirect(url_for('register'))
+        if db.session.scalar( sa.select(User).where(User.login == form.login.data) ) != None:
+            flash(['Логин уже используется', 'red'])
+            return redirect(url_for('register'))
+        user = User()
+        user.name = form.name.data
+        user.login = form.login.data
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        code.used_id = user.id
+        db.session.commit()
+        flash(['Вы зарегестрировались', 'green'])
+        login_user(user, remember=True)
+        return redirect(url_for('profile'))
     return render_template('register.html', form=form)
+
+
+@app.route('/reg-code', methods=['GET', 'POST'])
+@login_required
+def reg_code():
+    if not current_user.is_authenticated or current_user.account_type not in ['admin', 'teacher']:
+        return redirect(url_for('my_tasks'))
+    code = db.session.scalar( sa.select(RegCode)
+        .where(RegCode.author_id == current_user.id)
+        .where(RegCode.create_date > datetime.datetime.utcnow() - datetime.timedelta(minutes=Config.code_ttl))
+        .where(RegCode.used_id == None))
+    if code == None:
+        code = RegCode()
+        try_code = random.randint(*Config.code_range)
+        while db.session.scalar(sa.select(RegCode).where(RegCode.code == try_code)) != None:
+            try_code = random.randint(*Config.code_range)
+        code.code = try_code
+        code.author_id = current_user.id
+        db.session.add(code)
+        db.session.commit()
+    return render_template('reg-code.html', code=code.code)
 
 
 @app.route('/logout')
