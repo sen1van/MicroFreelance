@@ -1,15 +1,15 @@
 {% if data.selected %}
     {% for respond in responds %}
 
-        {% if loop.index == 1 %}
-            <div class="bg-black p-3 sm:rounded-2xl mt-2 text-center">
-                <span class="text-white text-xl text-center">Исполнитель выбран</span>  
-        {% endif %}
 
-        <div class="mt-3 p-5 border-t bg-white sm:border sm:rounded-lg sm:shadow text-start">
-            <div class="shrink-0 relative flex">
-                <a class="flex flex-nowrap grow-0 shrink-0 ml-3 mt-3" href="/profile/{{respond.author.login}}">
-                    <img class="size-20 rounded-xl" src="{{ url_for('static', filename='avatars/'+ respond.author.login + '.webp') }}">
+        <div class="card respond">
+            {% if respond.selected %}
+                <p class="selected-label">Выбран исполнителем</p>
+            {% endif %}
+            <div class="user-info">
+                <a class="user-link" href="/profile/{{respond.author.login}}">
+                    <img class="size-20 rounded-xl" src="{{ url_for('static', filename='avatars/'+ respond.author.login + '.webp') }}"
+                    onerror="this.src='/static/avatars/placeholder.svg'">
                     <div class="flex-row relative">
                         <p class="text-xl ml-2 mt-3 leading-4">{{ respond.author.name }}</p>
                         <p class="absolute top-11 left-2 w-32">Оценка +209232</p>
@@ -45,10 +45,6 @@
                 </div>
             {% endif %}
         </div>
-
-        {% if loop.index == 1 %}
-            </div>
-        {% endif %}
         
     {% endfor %}
 {% endif %}
@@ -64,7 +60,8 @@
     <div class="mt-5 p-5 border-t sm:border sm:rounded-2xl sm:shadow">
         <div class="shrink-0 relative">
                 <a class="flex flex-nowrap grow-0 shrink-0 ml-3 mt-3">
-                <img class="size-20 rounded-xl" src="{{ url_for('static', filename='avatars/'+ current_user.login + '.webp') }}">
+                <img class="size-20 rounded-xl" src="{{ url_for('static', filename='avatars/'+ current_user.login + '.webp') }}"
+                onerror="this.src='/static/avatars/placeholder.svg'">
                 <div class="flex-row relative">
                     <p class="text-xl ml-2 font-semibold mt-3 leading-4">{{ current_user.name }}</p>
                     <p class="absolute top-11 left-2 w-32">Оценка +209</p>
@@ -89,7 +86,8 @@
         <div class="mt-3 p-5 border-t bg-white sm:border sm:rounded-2xl sm:shadow">
             <div class="shrink-0 relative flex">
                 <a class="flex flex-nowrap grow-0 shrink-0 ml-3 mt-3" href="/profile/{{respond.author.login}}">
-                    <img class="size-20 rounded-xl" src="{{ url_for('static', filename='avatars/'+ respond.author.login + '.webp') }}">
+                    <img class="size-20 rounded-xl" src="{{ url_for('static', filename='avatars/'+ respond.author.login + '.webp') }}"
+                    onerror="this.src='/static/avatars/placeholder.svg'">
                     <div class="flex-row relative">
                         <p class="text-xl ml-2 font-semibold mt-3 leading-4">{{ respond.author.name }}</p>
                         <p class="absolute top-11 left-2 w-32">Оценка +209</p>

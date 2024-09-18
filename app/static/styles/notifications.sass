@@ -1,0 +1,59 @@
+.notifications-popup
+    display: none
+    position: relative
+    .pos
+        position: absolute
+        top: 45px
+    .content
+        position: block
+        font-size: 24px
+        padding: 8px
+        border: solid 1px
+        border-radius: 8px
+        background-color: $bg-color
+        width:400px
+        .title
+            width: 100%
+            text-align: center
+            padding-bottom: 7px
+        .list
+            width: 100%
+            .notification
+                width: auto
+                padding: 8px
+                border-radius: 4px
+                position: block
+                border: 1px solid
+                margin-top: 5px
+                .header
+                    font-size: 20px
+                    line-height: 1.6rem
+                .data
+                    line-height: 1.2rem
+                    font-size: 16px
+            .placeholder
+                color: #AAA
+                width: 100%
+                text-align: center
+                padding-bottom: 7px
+.notif-activ
+    display: block
+
+@keyframes new-notifications 
+    0%   
+        transform: rotate(30deg)
+    20%   
+        transform: rotate(-20deg)
+    40%   
+        transform: rotate(10deg)
+    60%   
+        transform: rotate(-7deg)
+    80%   
+        transform: rotate(4deg)
+    100%
+        transform: rotate(0deg)
+
+.notif-new
+    animation-timing-function: linar
+    animation-name: new-notifications
+    animation-duration: 1s

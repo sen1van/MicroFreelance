@@ -30,7 +30,7 @@ body {
   .card {
     border: 1px solid;
     box-shadow: 3px 3px 0px #000;
-    border-radius: 20px;
+    border-radius: 8px;
   }
 }
 
@@ -72,6 +72,7 @@ body {
 
 .nav-desktop {
   display: none;
+  height: 85px;
   border-bottom: 1px solid;
   padding: 24px;
   position: fixed;
@@ -104,6 +105,13 @@ body {
   font-size: 18px;
   line-height: 28px;
 }
+.nav-desktop .content .logo .notifications-container {
+  margin-left: 10px;
+  margin-top: -2px;
+}
+.nav-desktop .content .logo .notifications-container .notifications {
+  height: 40px;
+}
 .nav-desktop .tabs {
   display: flex;
   place-items: center;
@@ -119,7 +127,7 @@ body {
 }
 .nav-desktop .tabs .dropdown-content .menu {
   border: 1px solid;
-  border-radius: 20px;
+  border-radius: 8px;
   display: flex;
   flex-direction: column;
   margin-top: 8px;
@@ -159,6 +167,14 @@ body {
   z-index: 50;
   text-align: center;
   font-size: 36px;
+  border-bottom: solid 1px;
+  padding-bottom: 20px;
+}
+.mobile-logo .notifications {
+  margin-left: 20px;
+  animation-timing-function: linar;
+  animation-name: new-notifications;
+  animation-duration: 1s;
 }
 
 .nav-mobile {
@@ -190,8 +206,12 @@ body {
   }
   .mobile-logo {
     margin: 0;
+    border: none;
   }
   .mobile-logo a {
+    display: none;
+  }
+  .mobile-logo .notifications {
     display: none;
   }
 }
@@ -381,15 +401,13 @@ body {
   width: 100%;
 }
 
-.list {
-  border-bottom: 1px solid;
-}
 @media (min-width: 640px) {
   .list {
     border-bottom: 0px;
   }
 }
 .list .create_post .post {
+  border-top: solid 1px;
   margin-top: 24px;
   background-color: #fff;
   text-align: center;
@@ -426,7 +444,7 @@ body {
   color: #000;
   cursor: pointer;
   padding: 20px;
-  border-top: 1px solid;
+  border-bottom: 1px solid;
 }
 @media (min-width: 640px) {
   .list .post {
@@ -509,7 +527,7 @@ body {
 }
 .post-card input {
   border: 1px solid;
-  border-radius: 10px;
+  border-radius: 8px;
   padding: 10px;
 }
 .post-card .title-edit {
@@ -518,14 +536,14 @@ body {
 }
 .post-card .coast-edit {
   width: 160px;
-  border-radius: 10px 0px 0px 10px;
+  border-radius: 8px 0px 0px 8px;
   text-align: right;
   margin-right: 0px;
   border-right: 0px;
 }
 .post-card .currency-edit {
   width: 160px;
-  border-radius: 0px 10px 10px 0px;
+  border-radius: 0px 8px 8px 0px;
   margin-left: 0px;
 }
 .post-card .title {
@@ -548,7 +566,7 @@ body {
 .post-card .user .avatar {
   height: 80px;
   width: 80px;
-  border-radius: 10px;
+  border-radius: 8px;
 }
 .post-card .user .name {
   display: grid;
@@ -584,16 +602,16 @@ body {
 }
 .post-card .editor .editor-body {
   border: 1px solid;
-  border-radius: 10px;
+  border-radius: 8px;
   padding: 10px;
 }
 .post-card .editor .info {
   border: 1px solid;
-  border-radius: 10px;
+  border-radius: 8px;
   padding: 10px;
 }
 .post-card .edit-button {
-  border-radius: 10px;
+  border-radius: 8px;
   border: 1px solid;
   text-align: center;
   justify-content: center;
@@ -635,6 +653,28 @@ body {
     margin-right: 20px;
     width: 128px;
   }
+}
+
+.respond {
+  margin-top: 20px;
+}
+.respond .user-info {
+  shrink: 0;
+  position: relative;
+  display: flex;
+}
+.respond .user-info .user-link {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-grow: 0;
+  flex-shrink: 0;
+  margin-left: 12px;
+  margin-top: 12px;
+}
+.respond .selected-label {
+  text-align: center;
+  height: 0;
+  font-size: 20px;
 }
 
 .login {
@@ -684,6 +724,84 @@ body {
   font-size: 72px;
   text-align: center;
   margin-top: 30vh;
+}
+
+.notifications-popup {
+  display: none;
+  position: relative;
+}
+.notifications-popup .pos {
+  position: absolute;
+  top: 45px;
+}
+.notifications-popup .content {
+  position: block;
+  font-size: 24px;
+  padding: 8px;
+  border: solid 1px;
+  border-radius: 8px;
+  background-color: #fff;
+  width: 400px;
+}
+.notifications-popup .content .title {
+  width: 100%;
+  text-align: center;
+  padding-bottom: 7px;
+}
+.notifications-popup .content .list {
+  width: 100%;
+}
+.notifications-popup .content .list .notification {
+  width: auto;
+  padding: 8px;
+  border-radius: 4px;
+  position: block;
+  border: 1px solid;
+  margin-top: 5px;
+}
+.notifications-popup .content .list .notification .header {
+  font-size: 20px;
+  line-height: 1.6rem;
+}
+.notifications-popup .content .list .notification .data {
+  line-height: 1.2rem;
+  font-size: 16px;
+}
+.notifications-popup .content .list .placeholder {
+  color: #AAA;
+  width: 100%;
+  text-align: center;
+  padding-bottom: 7px;
+}
+
+.notif-activ {
+  display: block;
+}
+
+@keyframes new-notifications {
+  0% {
+    transform: rotate(30deg);
+  }
+  20% {
+    transform: rotate(-20deg);
+  }
+  40% {
+    transform: rotate(10deg);
+  }
+  60% {
+    transform: rotate(-7deg);
+  }
+  80% {
+    transform: rotate(4deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+.notif-new {
+  animation-timing-function: linar;
+  animation-name: new-notifications;
+  animation-duration: 1s;
 }
 
 /*# sourceMappingURL=output.css.map */

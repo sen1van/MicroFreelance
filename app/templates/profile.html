@@ -4,6 +4,7 @@
 <div class="profile card">
         <img 
             src="{{ url_for('static', filename='avatars/'+user.login + '.webp') }}"
+            onerror="this.src='/static/avatars/placeholder.svg'"
         >
     <div class="content">
         <a class="username">{{ user.name }}</a>

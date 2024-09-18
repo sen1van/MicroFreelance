@@ -8,20 +8,20 @@
 
     input
         border: 1px solid
-        border-radius: 10px
+        border-radius: 8px
         padding: 10px
     .title-edit
         font-weight: 600
         width: 100%
     .coast-edit
         width: 160px
-        border-radius: 10px 0px 0px 10px
+        border-radius: 8px 0px 0px 8px
         text-align: right
         margin-right: 0px
         border-right: 0px
     .currency-edit
         width: 160px
-        border-radius: 0px 10px 10px 0px
+        border-radius: 0px 8px 8px 0px
         margin-left: 0px
     .title
         font-size: 24px
@@ -40,7 +40,7 @@
         .avatar
             height: 80px
             width: 80px
-            border-radius: 10px
+            border-radius: 8px
         .name
             display: grid
             align-content: center
@@ -68,14 +68,14 @@
         margin-top: 16px
         .editor-body
             border: 1px solid
-            border-radius: 10px
+            border-radius: 8px
             padding: 10px
         .info
             border: 1px solid
-            border-radius: 10px
+            border-radius: 8px
             padding: 10px
     .edit-button
-        border-radius: 10px
+        border-radius: 8px
         border: 1px solid
         text-align: center
         justify-content: center
@@ -108,3 +108,21 @@
             @media (min-width: $small-width)
                 margin-right: 20px
                 width: 128px
+
+.respond
+    margin-top: 20px
+    .user-info
+        shrink: 0
+        position: relative
+        display: flex
+        .user-link
+            display: flex
+            flex-wrap: nowrap
+            flex-grow: 0
+            flex-shrink: 0
+            margin-left: 12px
+            margin-top: 12px
+    .selected-label
+        text-align: center
+        height: 0
+        font-size: 20px

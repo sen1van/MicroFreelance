@@ -20,7 +20,7 @@ class ProfileEditorForm(FlaskForm):
     name = StringField('Имя', validators=[DataRequired()])
     aboutme = TextAreaField('Обомне', validators=[DataRequired()])
     contact_info = TextAreaField('contact_info')
-    photo = FileField('image', validators=[FileAllowed(['jpg', 'png', 'webp', 'gif'], 'Images only!')])
+    photo = FileField('image', validators=[FileAllowed(['jpg', 'png', 'webp', 'gif','jpeg'], 'Images only!')])
     submit = SubmitField('Завершить')
 
 class PostEditorForm(FlaskForm):

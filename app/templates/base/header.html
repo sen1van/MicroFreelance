@@ -2,7 +2,9 @@
     <div class="content">
       <div class="logo">
         <a href="/"> MicroFreelance</a>
-        <span class="account-type">[{{current_user.account_type}}]</span>
+        <div class="notifications-container">
+          {% include 'base/header_assets/notifications.html' %}
+        </div>
       </div>
       <div class="tabs">
           <a class="tab" href="/all-tasks"> Все заявки </a>
@@ -27,7 +29,7 @@
 
 
 <div class="mobile-logo vibrate" >
-  <a>MicroFreelance</a>
+  <a>MicroFreelance</a><img class="notifications" src="/static/icons/notifications.svg">
 </div>
 
 <nav class="nav-mobile">

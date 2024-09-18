@@ -24,7 +24,8 @@
         <div class="relative ">
             {% if current_user.is_authenticated and data.author.id == current_user.id and not data.archived and not data.selected %}
             <a class="edit-button" href="/edit-post/{{data.id}}">
-                <img src="/static/icons/edit.svg">
+                <img src="/static/icons/edit.svg"
+                onerror="this.src='/static/avatars/placeholder.svg'">
             </a>
             {% endif %}
             <div class="title"> 
@@ -39,7 +40,9 @@
             {% else %}
                 <a href="/profile/{{data.author.login}}" class="link">
             {% endif %}
-                <img class="avatar" src="{{ url_for('static', filename='avatars/'+data.author.login + '.webp') }}">
+                <img class="avatar" src="{{ url_for('static', filename='avatars/'+data.author.login + '.webp') }}"
+                onerror="this.src='/static/avatars/placeholder.svg'">
+                
                 <div class="name">
                     <p> {{ data.author.name }} </p>
                 </div>

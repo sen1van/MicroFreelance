@@ -152,7 +152,14 @@ def my_tasks(filter = None):
             .where(Post.archived == False)                                    \
             .where(Post.id.in_(
                 sa.select(PostRespond.post_id).where(PostRespond.author_id == current_user.id)
-            )).order_by(Post.selected.desc(), Post.update_date.desc())
+            ))                                                                          \
+            .where(
+                sa.or_(
+                    Post.selected == False,
+                    Post.selected_respond_author_id == current_user.id
+                )
+            ) \
+            .order_by(Post.selected.desc(), Post.update_date.desc())
     
     return render_template('post_list.html', tasks = list(db.session.scalars(query)), create_new = True, current_user=current_user, null_message='У вас нету обьявлений')
 
@@ -264,10 +271,13 @@ def post(id = None):
             form.text.data = respond.text
             form.submit.label.text = "Изменить"
         responds = [respond]
+        if data.selected == True and respond.selected == False:
+            return abort(418)
     else:
         form=''
         if current_user.is_authenticated and data.author_id == current_user.id:
             responds = data.respond
+            responds = sorted(responds, key= lambda x: not x.selected)
         else:
             responds = []
     return render_template('post.html', edit=False, form=form, data=data, current_user=current_user, responds=responds)
@@ -300,7 +310,7 @@ def archiving_post(post_id):
 @login_required
 def end_post(post_id):
     post = db.session.scalar( sa.select(Post).where(Post.id == post_id) )
-    if post.selected_respond_author_id != current_user.id or not post.selected:
+    if post.author_id != current_user.id or not post.selected:
         return abort(403)
     post.archived = True
     post.archived_date = func.now()
@@ -418,3 +428,26 @@ def do_admin(login):
     u.account_type = 'admin'
     db.session.commit()
     return redirect(url_for("login"))
+
+
+# api
+@app.route('/api/get-notifications')
+def api_get_notifications():
+    return {
+        'new' : True,
+        'data': [
+            {
+                'header' : 'Test notif',
+                'data' : 'Test lorem ipsom IDIDI',
+                'link' : 'profile'
+            },
+                        {
+                'header' : 'Test notif',
+                'data' : 'Test lorem ipsom IDIDI',
+                'link' : 'profile'
+            }
+        ]
+        }
+@app.route('/api/ok-notifications')
+def api_ok_notifications():
+    return {}
