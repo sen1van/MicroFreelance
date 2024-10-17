@@ -1,7 +1,7 @@
 from werkzeug.security import generate_password_hash, check_password_hash
-from typing import Optional, List
-from sqlalchemy import String, ForeignKey, Integer, DateTime, Boolean
-from sqlalchemy.orm import *
+from typing import Optional
+from sqlalchemy import String, ForeignKey, DateTime
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
 from flask_login import UserMixin
 import datetime
@@ -25,6 +25,19 @@ class User(UserMixin, db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+    def check_role(self, roles: list[str]) -> bool: # TODO
+        return self.account_type in roles
+
+    def add_notification(self, header: str, data: str, link: str = '') -> None:
+        new_notification = Notification()
+        new_notification.reciver_id = self.id
+        new_notification.header = header
+        new_notification.data = data
+        new_notification.link = link
+        db.session.add(new_notification)
+        db.session.commit()    
+        return None
 
     def __repr__(self):
         return '<User {} : {} : {}>'.format(self.login, self.name, self.id) 
@@ -78,3 +91,25 @@ class RegCode(db.Model):
     author_id: Mapped[int]                  = mapped_column(ForeignKey(User.id), nullable=False)
     used_id: Mapped[int]                    = mapped_column(ForeignKey(User.id), nullable=True)
     create_date: Mapped[datetime.datetime]  = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+class Notification(db.Model):
+    __table_name__ = "post_respond"
+    
+    id: Mapped[int]                         = mapped_column(primary_key=True)
+    reciver_id: Mapped[int]                 = mapped_column(ForeignKey(User.id), nullable=False)
+    link: Mapped[str]                       = mapped_column(String(256))
+    header: Mapped[str]                     = mapped_column(String(256))
+    data: Mapped[str]                       = mapped_column(String(256))
+    readed: Mapped[bool]                    = mapped_column(default=False)
+    create_date: Mapped[datetime.datetime]  = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+    def json(self):
+        return {
+            'id' : self.id,
+            'link' : self.link,
+            'header' : self.header,
+            'data' : self.data,
+            'readed' : self.readed,
+            'create_data' : self.create_date
+        }
+

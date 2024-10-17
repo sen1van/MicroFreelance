@@ -1,18 +1,26 @@
-from flask import render_template, flash, redirect, url_for, request, abort
+from flask import render_template, flash, redirect, url_for, request, abort, jsonify
 from flask_login import current_user, login_user, logout_user, login_required
 import sqlalchemy as sa
 from sqlalchemy.sql import func
 from wand.image import Image
 import datetime
-import utils
 import random
 
-import fish
 from app import app
-from forms import *
+from forms import LoginForm, RegisterForm, ProfileEditorForm, PostEditorForm
+from forms import AdminUserEditForm, PostRespondForm
 from app import db
-from models import *
+from models import User, Post, PostRespond, Notification, RegCode
 from config import Config
+
+
+# idk how do it better
+# TODO: find the right way to do this
+base_render_teplate = render_template
+def render_template(*args, **kwargs):
+    kwargs['current_user'] = current_user
+    return base_render_teplate(*args, **kwargs)
+
 
 @app.route('/login/', methods=['GET', 'POST'])
 @app.route('/login', methods=['GET', 'POST'])
@@ -30,7 +38,7 @@ def login():
         flash(['Вы успешно вошли', 'green'])
         login_user(user, remember=True)
         return redirect(url_for('profile'))
-    return render_template('login.html', form=form, current_user=current_user)
+    return render_template('login.html', form=form)
 
 @app.route('/register/', methods=['GET', 'POST'])
 @app.route('/register', methods=['GET', 'POST'])
@@ -41,16 +49,16 @@ def register():
 
     if form.validate_on_submit():
         code = db.session.scalar( sa.select(RegCode).where(RegCode.code == form.code.data) )
-        if code == None:
+        if code is None:
             flash(['Код не найден', 'red'])
             return redirect(url_for('register'))
         if code.create_date < datetime.datetime.utcnow() - datetime.timedelta(minutes=Config.code_ttl):
             flash(['Код устарел', 'red'])
             return redirect(url_for('register'))
-        if code.used_id != None:
+        if code.used_id is not None:
             flash(['Код уже используется', 'red'])
             return redirect(url_for('register'))
-        if db.session.scalar( sa.select(User).where(User.login == form.login.data) ) != None:
+        if db.session.scalar( sa.select(User).where(User.login == form.login.data) ) is not None:
             flash(['Логин уже используется', 'red'])
             return redirect(url_for('register'))
         user = User()
@@ -70,16 +78,18 @@ def register():
 @app.route('/reg-code', methods=['GET', 'POST'])
 @login_required
 def reg_code():
-    if not current_user.is_authenticated or current_user.account_type not in ['admin', 'teacher']:
-        return redirect(url_for('my_tasks'))
+    if not current_user.is_authenticated:
+        return abort(401)
+    if not current_user.check_role(['admin', 'teacher']):
+        return abort(418)
     code = db.session.scalar( sa.select(RegCode)
         .where(RegCode.author_id == current_user.id)
         .where(RegCode.create_date > datetime.datetime.utcnow() - datetime.timedelta(minutes=Config.code_ttl))
-        .where(RegCode.used_id == None))
-    if code == None:
+        .where(RegCode.used_id is None))
+    if code is None:
         code = RegCode()
         try_code = random.randint(*Config.code_range)
-        while db.session.scalar(sa.select(RegCode).where(RegCode.code == try_code)) != None:
+        while db.session.scalar(sa.select(RegCode).where(RegCode.code == try_code)) is not None:
             try_code = random.randint(*Config.code_range)
         code.code = try_code
         code.author_id = current_user.id
@@ -98,14 +108,14 @@ def logout():
 @app.route('/profile')
 @app.route('/profile/<login>')
 def profile(login = None):
-    if login == None and current_user.is_authenticated:
+    if login is None and current_user.is_authenticated:
         return redirect(url_for('profile', login = current_user.login))
     is_owner = False
     if current_user.is_authenticated and login == current_user.login:
         is_owner = True
     user = db.session.scalar( sa.select(User).where(User.login == login))
-    if user != None:
-        return render_template('profile.html', user = user, owner = is_owner, current_user=current_user)
+    if user is not None:
+        return render_template('profile.html', user = user, owner = is_owner)
     return abort(404)
     
 @app.route('/profile-editor/', methods=['GET', 'POST'])
@@ -134,7 +144,7 @@ def profile_editor():
         flash(['Произошла ошибка, возможно ошибка заполнения', 'red'])
     form.aboutme.data = current_user.aboutme
     form.contact_info.data = current_user.contact_info
-    return render_template('profile_editor.html', current_user=current_user, form=form)
+    return render_template('profile_editor.html', form=form)
 
 
 @app.route('/my-tasks/<filter>')
@@ -161,7 +171,7 @@ def my_tasks(filter = None):
             ) \
             .order_by(Post.selected.desc(), Post.update_date.desc())
     
-    return render_template('post_list.html', tasks = list(db.session.scalars(query)), create_new = True, current_user=current_user, null_message='У вас нету обьявлений')
+    return render_template('post_list.html', tasks = list(db.session.scalars(query)), create_new = True, null_message='У вас нету обьявлений')
 
 @app.route('/')
 @app.route('/index')
@@ -173,7 +183,7 @@ def all_tasks(filter = None):
         .where(Post.selected == False)           \
         .where(Post.archived == False)                      \
         .order_by(Post.selected.desc(), Post.update_date.desc())
-    return render_template('post_list.html', tasks = list(db.session.scalars(query)), create_new = True, current_user=current_user, null_message='Сейчас на сайте обьявлений нет, приходите ещё')
+    return render_template('post_list.html', tasks = list(db.session.scalars(query)), create_new = True, null_message='Сейчас на сайте обьявлений нет, приходите ещё')
 
 @app.route('/')
 @app.route('/archive/')
@@ -183,14 +193,16 @@ def archive(filter = None):
         .where(Post.archived == True)                               \
         .where(sa.or_(Post.author_id == current_user.id, Post.selected_respond_author_id == current_user.id)) \
         .order_by(Post.selected.desc(), Post.update_date.desc())
-    return render_template('post_list.html', tasks = list(db.session.scalars(query)), create_new = False, title='Архив', current_user=current_user, null_message='В архиве пусто....')
+    return render_template('post_list.html', tasks = list(db.session.scalars(query)), create_new = False, title='Архив', null_message='В архиве пусто....')
 
 @app.route('/create-post/', methods=['GET', 'POST'])
 @app.route('/create-post',  methods=['GET', 'POST'])
 @login_required
 def create_post():
     if not current_user.is_authenticated:
-        return redirect(url_for('my_tasks'))
+        abort(401)
+    if not current_user.check_role('admin'):
+        abort(418)
     form = PostEditorForm()
     if form.validate_on_submit():
         print(form.data_text.data)
@@ -217,7 +229,7 @@ def create_post():
         data.currency = form.currency.data
         flash(['Произошла ошибка, возможно ошибка заполнения', 'red'])
     data.new_post = True
-    return render_template('post.html', edit=True, form=form, current_user=current_user, data = data)
+    return render_template('post.html', edit=True, form=form, data = data)
 
 @app.route('/edit-post/<post_id>', methods=['GET', 'POST'])
 @login_required
@@ -247,12 +259,12 @@ def edit_post(post_id):
         flash(['Произошла ошибка, возможно ошибка заполнения', 'red'])
     if data.archived or data.selected:
         return redirect(url_for("post", id=post_id))
-    return render_template('post.html', edit=True, form=form, current_user=current_user, data = data)
+    return render_template('post.html', edit=True, form=form, data = data)
 
 @app.route('/post/<id>', methods=['GET', 'POST'])
 def post(id = None):
     data = db.session.scalar( sa.select(Post).where(Post.id == id) )
-    if data == None:
+    if data is None:
         return abort(404)
     if current_user.is_authenticated and current_user.id != data.author_id:
         form = PostRespondForm()
@@ -280,20 +292,8 @@ def post(id = None):
             responds = sorted(responds, key= lambda x: not x.selected)
         else:
             responds = []
-    return render_template('post.html', edit=False, form=form, data=data, current_user=current_user, responds=responds)
+    return render_template('post.html', edit=False, form=form, data=data, responds=responds)
 
-# Удалять посты пока нельзя, только архивация
-# Загатовка для админ панели
-# @app.route('/delete-post/<id>')
-# @login_required
-# def delete_post(id = None):
-#     data = db.session.scalar( sa.select(Post).where(Post.id == id) )
-#     if data.author_id != current_user.id:
-#         return abort(418)
-#     db.session.delete(data)
-#     db.session.commit()
-#     flash(['Вы удалили пост', 'green'])
-#     return redirect(url_for('my_tasks'))
 
 @app.route('/archiving-post/<post_id>')
 @login_required
@@ -333,10 +333,13 @@ def select_respond(post_id, user_id):
 
 
 
+
+# admin actions
+
 @app.route('/admin')
 @login_required
 def admin_panel():
-    if current_user.account_type != "admin":
+    if not current_user.check_role('admin'):
         abort(418)
     users = db.session.scalars(sa.select(User))
     return render_template('admin/admin_panel.html', users=users)
@@ -345,7 +348,7 @@ def admin_panel():
 @app.route('/admin/<user_id>', methods=['GET', 'POST'])
 @login_required
 def admin_panel_edit_user(user_id):
-    if current_user.account_type != "admin":
+    if not current_user.check_role('admin'):
         abort(418)
     user = db.session.scalar(sa.select(User).where(User.id == user_id))
     form = AdminUserEditForm()
@@ -366,9 +369,9 @@ def admin_panel_edit_user(user_id):
 
 @app.route('/admin-create-new-user')
 def new_user():
-    if current_user.account_type != "admin":
+    if not current_user.check_role('admin'):
         abort(418)
-    if db.session.scalar(sa.select(User).where(User.login == 'new-user')) != None:
+    if db.session.scalar(sa.select(User).where(User.login == 'new-user')) is not None:
         flash(['Новый пользователь уже создан', 'red'])
         return redirect(url_for("admin_panel"))
     u = User()
@@ -382,7 +385,7 @@ def new_user():
 @app.route('/admin-delete-user/<id>')
 @login_required
 def delete_user(id):
-    if current_user.account_type != "admin":
+    if not current_user.check_role('admin'):
         abort(418)
     data = db.session.scalar( sa.select(User).where(User.id == id) )
     db.session.delete(data)
@@ -391,63 +394,53 @@ def delete_user(id):
     return redirect(url_for('admin_panel'))
 
 
+
+
+# errors
 @app.errorhandler(404)
-def page_not_found(e):
-    return render_template('errors/404.html', current_user=current_user), 404
+def page_not_found_e(e):
+    return render_template('errors/404.html'), 404
 
 @app.errorhandler(401)
-def login_required(e):
-    return render_template('errors/401.html', current_user=current_user), 401
+def login_required_e(e):
+    return render_template('errors/401.html'), 401
 
 @app.errorhandler(403)
-def Forbidden(e):
-    return render_template('errors/403.html', current_user=current_user), 401
+def Forbidden_e(e):
+    return render_template('errors/403.html'), 401
 
 @app.errorhandler(418)
-def teapot(e):
-    return render_template('errors/418.html', current_user=current_user), 401
+def teapot_e(e):
+    return render_template('errors/418.html'), 401
 
 
-
-
-
-
-
-@app.route('/create-user-debug/<login>')
-def new_user_debug(login):
-    u = User()
-    u.login = login
-    u.set_password('1111')
-    db.session.add(u)
-    db.session.commit()
-    return redirect(url_for("login"))
-
-@app.route('/do-admin-debug/<login>')
-def do_admin(login):
-    u = db.session.scalar(sa.select(User).where(User.login == login))
-    u.account_type = 'admin'
-    db.session.commit()
-    return redirect(url_for("login"))
 
 
 # api
 @app.route('/api/get-notifications')
+@login_required
 def api_get_notifications():
-    return {
-        'new' : True,
-        'data': [
-            {
-                'header' : 'Test notif',
-                'data' : 'Test lorem ipsom IDIDI',
-                'link' : 'profile'
-            },
-                        {
-                'header' : 'Test notif',
-                'data' : 'Test lorem ipsom IDIDI',
-                'link' : 'profile'
-            }
-        ]
-        }
+    data = sa.select(Notification)                         \
+            .where(Notification.reciver_id == current_user.id)   \
+            .order_by(Notification.create_date.desc()).limit(5)
+    data = list(db.session.scalars(data))
+    return jsonify(*map(lambda x: x.json(), data))
+
 @app.route('/api/ok-notifications')
+@login_required
 def api_ok_notifications():
-    return {}
+    data = sa.select(Notification)                         \
+        .where(Notification.reciver_id == current_user.id)   \
+        .where(Notification.readed == False)
+    data = list(db.session.scalars(data))
+    print(data)
+    for i in data:
+        i.readed = True
+    db.session.commit()
+    return {'status' : 'ok'}
+
+@app.route('/api/test-notification')
+@login_required
+def api_test_notification():
+    current_user.add_notification('TEST NOTIFICATION', 'test notification sended')
+    return {'status' : 'ok'}

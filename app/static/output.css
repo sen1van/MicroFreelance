@@ -726,6 +726,38 @@ body {
   margin-top: 30vh;
 }
 
+.admin-panel .user-table {
+  table-layout: auto;
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  border: 2px solid rgb(140, 140, 140);
+}
+.admin-panel .user-table .header {
+  background: #aaa;
+  text-align: left;
+}
+.admin-panel .user-table .header th {
+  border: solid 1px;
+  padding: 5px;
+}
+.admin-panel .user-table .user-line {
+  cursor: pointer;
+}
+.admin-panel .user-table .user-line:hover {
+  background: #ccc;
+}
+.admin-panel .user-table .user-line td {
+  border: solid 1px;
+  padding: 5px;
+}
+.admin-panel .add-user {
+  text-align: center;
+  border: solid 1px;
+  margin-top: 15px;
+  padding: 25px;
+}
+
 .notifications-popup {
   display: none;
   position: relative;
@@ -736,7 +768,7 @@ body {
 }
 .notifications-popup .content {
   position: block;
-  font-size: 24px;
+  font-size: 20px;
   padding: 8px;
   border: solid 1px;
   border-radius: 8px;
@@ -760,18 +792,21 @@ body {
   margin-top: 5px;
 }
 .notifications-popup .content .list .notification .header {
-  font-size: 20px;
+  font-size: 16px;
   line-height: 1.6rem;
 }
 .notifications-popup .content .list .notification .data {
   line-height: 1.2rem;
-  font-size: 16px;
+  font-size: 14px;
 }
 .notifications-popup .content .list .placeholder {
   color: #AAA;
   width: 100%;
   text-align: center;
   padding-bottom: 7px;
+}
+.notifications-popup .content .unread {
+  background-color: #FFFF90;
 }
 
 .notif-activ {

@@ -1,3 +1,4 @@
+{% if current_user.is_authenticated %}
 <div class="notifications-popup" id="notif-popup">
     <div class="pos">
         <div class="content">
@@ -16,3 +17,4 @@
     </div>
 </div>
 <img class="notifications" src="/static/icons/notifications.svg" id="notif-button">
+{% endif %}
