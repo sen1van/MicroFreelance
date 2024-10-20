@@ -490,9 +490,23 @@ body {
 .list .post .bottom-line {
   display: flex;
   margin-top: 16px;
+  flex-wrap: wrap-reverse;
+  justify-content: space-between;
 }
 .list .post .bottom-line .date {
   flex-grow: 1;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  display: flex;
+}
+.list .post .bottom-line .date span {
+  background-color: #000;
+  border-radius: 5px;
+  padding: 4px;
+  font-size: 12px;
+  color: #fff;
+  margin-left: 4px;
+  margin-top: -2px;
 }
 .list .post .bottom-line .author {
   display: flex;
@@ -675,6 +689,27 @@ body {
   text-align: center;
   height: 0;
   font-size: 20px;
+}
+.respond .text-about {
+  overflow-y: auto;
+  white-space: pre-wrap;
+  height: 13rem;
+  padding: 1rem;
+  padding: 1.25rem;
+  margin-top: 1.25rem;
+  border: solid 1px;
+  border-radius: 8px;
+  width: 100%;
+  resize: none;
+}
+.respond .button-container {
+  flex-grow: 1;
+}
+.respond .button-container .button, .respond .button-container .button-action {
+  padding: 15px;
+}
+.respond .button-container .button-action {
+  padding: 15px;
 }
 
 .login {

@@ -152,7 +152,7 @@ def profile_editor():
 @app.route('/my-tasks')
 @login_required
 def my_tasks(filter = None):
-    if current_user.account_type in ['admin', 'teacher']:
+    if current_user.check_role(['admin', 'teacher']):
         query = sa.select(Post)                         \
             .where(Post.author_id == current_user.id)   \
             .where(Post.archived == False)              \
@@ -170,8 +170,12 @@ def my_tasks(filter = None):
                 )
             ) \
             .order_by(Post.selected.desc(), Post.update_date.desc())
-    
-    return render_template('post_list.html', tasks = list(db.session.scalars(query)), create_new = True, null_message='У вас нету обьявлений')
+    tasks = list(db.session.scalars(query))
+    if current_user.check_role(['admin', 'teacher']):
+        for task in tasks:
+            respond_count = sa.select(func.count('*')).where(PostRespond.post_id == task.id)
+            task.respond_count = db.session.scalar(respond_count)
+    return render_template('post_list.html', tasks = tasks, create_new = True, null_message='У вас нету обьявлений')
 
 @app.route('/')
 @app.route('/index')
@@ -183,7 +187,12 @@ def all_tasks(filter = None):
         .where(Post.selected == False)           \
         .where(Post.archived == False)                      \
         .order_by(Post.selected.desc(), Post.update_date.desc())
-    return render_template('post_list.html', tasks = list(db.session.scalars(query)), create_new = True, null_message='Сейчас на сайте обьявлений нет, приходите ещё')
+    tasks = list(db.session.scalars(query))
+    if current_user.check_role(['admin', 'teacher']):
+        for task in tasks:
+            respond_count = sa.select(func.count('*')).where(PostRespond.post_id == task.id)
+            task.respond_count = db.session.scalar(respond_count)
+    return render_template('post_list.html', tasks = tasks, create_new = True, null_message='Сейчас на сайте обьявлений нет, приходите ещё')
 
 @app.route('/')
 @app.route('/archive/')
@@ -282,8 +291,11 @@ def post(id = None):
         if respond and not data.selected:
             form.text.data = respond.text
             form.submit.label.text = "Изменить"
+        if not respond:
+            respond = PostRespond()
+            respond.author = current_user
         responds = [respond]
-        if data.selected == True and respond.selected == False:
+        if data.selected and not respond.selected:
             return abort(418)
     else:
         form=''

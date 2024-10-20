@@ -70,8 +70,21 @@
         .bottom-line
             display: flex
             margin-top: 16px
+            flex-wrap: wrap-reverse
+            justify-content: space-between
             .date
                 flex-grow: 1
+                flex-wrap: nowrap
+                flex-shrink: 0
+                display: flex
+                span
+                    background-color: $text-color
+                    border-radius: 5px
+                    padding: 4px
+                    font-size: 12px
+                    color: $bg-color
+                    margin-left: 4px
+                    margin-top: -2px
             .author
                 display: flex
                 flex-shrink: 0

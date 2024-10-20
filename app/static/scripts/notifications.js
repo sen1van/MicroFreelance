@@ -79,11 +79,11 @@ document.addEventListener('click', (e) => {
     if(e.target == notif_button) { 
         if (!isNotifOpen){
             notif_popup.classList.add('notif-activ');
-            regular_chek = '';
+            clearInterval(regular_check)
         }
         else{
             notif_popup.classList.remove('notif-activ');
-            regular_chek = setInterval(get_notifications, 5000)
+            regular_check = setInterval(get_notifications, 5000)
         }
         isNotifOpen = !isNotifOpen;
         notifOpen()
@@ -91,9 +91,9 @@ document.addEventListener('click', (e) => {
     else {
         isNotifOpen = false
         notif_popup.classList.remove('notif-activ');
-        regular_chek = setInterval(get_notifications, 5000)
+        regular_check = setInterval(get_notifications, 5000)
     }
 });
 
 
-regular_chek = setInterval(get_notifications, 5000)
+regular_check = setInterval(get_notifications, 5000)
