@@ -8,9 +8,9 @@ import random
 
 from app import app
 from forms import LoginForm, RegisterForm, ProfileEditorForm, PostEditorForm
-from forms import AdminUserEditForm, PostRespondForm
+from forms import AdminUserEditForm, PostRespondForm, PortfolioRecordForm
 from app import db
-from models import User, Post, PostRespond, Notification, RegCode
+from models import User, Post, PostRespond, Notification, RegCode, Portfolio
 from config import Config
 
 
@@ -115,7 +115,12 @@ def profile(login = None):
         is_owner = True
     user = db.session.scalar( sa.select(User).where(User.login == login))
     if user is not None:
-        return render_template('profile.html', user = user, owner = is_owner)
+        portfolio_records = list(db.session.scalars( 
+            sa.select(Portfolio)
+                .where(Portfolio.doer_id == user.id)
+                .order_by(Portfolio.id.desc())
+        ))
+        return render_template('profile.html', user=user, owner=is_owner, portfolio_records=portfolio_records)
     return abort(404)
     
 @app.route('/profile-editor/', methods=['GET', 'POST'])
@@ -188,7 +193,7 @@ def all_tasks(filter = None):
         .where(Post.archived == False)                      \
         .order_by(Post.selected.desc(), Post.update_date.desc())
     tasks = list(db.session.scalars(query))
-    if current_user.check_role(['admin', 'teacher']):
+    if current_user.is_authenticated and current_user.check_role(['admin', 'teacher']):
         for task in tasks:
             respond_count = sa.select(func.count('*')).where(PostRespond.post_id == task.id)
             task.respond_count = db.session.scalar(respond_count)
@@ -210,7 +215,7 @@ def archive(filter = None):
 def create_post():
     if not current_user.is_authenticated:
         abort(401)
-    if not current_user.check_role('admin'):
+    if not current_user.check_role(['admin', 'teacher']):
         abort(418)
     form = PostEditorForm()
     if form.validate_on_submit():
@@ -275,7 +280,7 @@ def post(id = None):
     data = db.session.scalar( sa.select(Post).where(Post.id == id) )
     if data is None:
         return abort(404)
-    if current_user.is_authenticated and current_user.id != data.author_id:
+    if current_user.is_authenticated and current_user.id != data.author_id and current_user.check_role(['student']):
         form = PostRespondForm()
         respond = db.session.query( PostRespond ).filter(PostRespond.author_id == current_user.id).filter(PostRespond.post_id == id).first()
         if form.validate_on_submit():
@@ -456,3 +461,47 @@ def api_ok_notifications():
 def api_test_notification():
     current_user.add_notification('TEST NOTIFICATION', 'test notification sended')
     return {'status' : 'ok'}
+
+
+def record_base(post_id, header):
+    form = PortfolioRecordForm()
+    if form.validate_on_submit():
+        user = current_user
+        post = db.session.scalar( sa.select(Post).where(Post.id == post_id) )
+        doer_id = db.session.scalar(
+            sa.select(User)
+                .where(User.id == post.selected_respond_author_id)
+        )
+        portfolio_record = Portfolio()
+        portfolio_record.data = form.data.data
+        portfolio_record.doer_id = doer_id.id
+        portfolio_record.header = header
+    
+        db.session.add(portfolio_record)
+        db.session.commit()
+        flash(['Успех', 'green'])
+        return redirect(url_for('profile'))
+    return render_template('add_portfolio_record.html', form=form, header=header)
+
+
+@app.route('/finish-post/<post_id>', methods=['GET', 'POST'])
+@login_required
+def finish_post(post_id):
+    if not current_user.check_role(['teacher', 'admin']):
+        abort(418)
+    return record_base(post_id, 'Выполнил работу')
+
+# @app.route('/finish-post/<post_id>', methods=['GET', 'POST'])
+# @login_required
+# def finish_post(post_id):
+#     if not current_user.check_role(['teacher', 'admin']):
+#         abort(418)
+#     return record_base(post_id, 'Выполнил работу')
+
+# @app.route('/finish-post/<post_id>', methods=['GET', 'POST'])
+# @login_required
+# def finish_post(post_id):
+#     if not current_user.check_role(['teacher', 'admin']):
+#         abort(418)
+#     return record_base(post_id, 'Выполнил работу')
+

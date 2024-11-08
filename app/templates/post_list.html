@@ -24,17 +24,21 @@
                 </div>
                 <p class="about">{{ task.data_text|truncate(150) }}</p>
                 <div class="bottom-line">
-                    <p class="date"> 
-                        {{ task.create_date.strftime("%H:%M %d/%m/%Y")}} 
-                        {% if task.respond_count %}
-                            <span>Ответов: {{task.respond_count}}</span>
-                        {% endif %}
-                    </p>
-                    <div class="author">
-                        <p class="name">{{ task.author.name }}</p>
-                        <img class="avatar" src="{{ url_for('static', filename='avatars/' + task.author.login + '.webp') }}"
-                        onerror="this.src='/static/avatars/placeholder.svg'">
+                    <div class="date-author">
+                        <p class="date"> 
+                            {{ task.create_date.strftime("%H:%M %d/%m/%Y")}} 
+                            {% if task.respond_count %}
+                                <span>Ответов: {{task.respond_count}}</span>
+                            {% endif %}
+                        </p>
+                        <div class="author">
+                            <p class="name">{{ task.author.name }}</p>
+                            <img class="avatar" src="{{ url_for('static', filename='avatars/' + task.author.login + '.webp') }}"
+                            onerror="this.src='/static/avatars/placeholder.svg'">
+                        </div>
                     </div>
+                    <img class="avatar-mobile" src="{{ url_for('static', filename='avatars/' + task.author.login + '.webp') }}"
+                onerror="this.src='/static/avatars/placeholder.svg'">
                 </div>
                 {% if task.selected %}
                     <div class="selected">

@@ -401,6 +401,21 @@ body {
   width: 100%;
 }
 
+.portfolio h1 {
+  font-size: 32px;
+  margin-top: 20px;
+}
+.portfolio .card {
+  margin-top: 10px;
+}
+.portfolio .card h2 {
+  font-size: 20px;
+  font-weight: 800;
+}
+.portfolio .card p {
+  margin-top: 10px;
+}
+
 @media (min-width: 640px) {
   .list {
     border-bottom: 0px;
@@ -454,7 +469,7 @@ body {
     border-radius: 8px;
     box-shadow: 3px 3px 0px #000;
     transition: all 70ms;
-    width: 66.6666666667%;
+    width: 75%;
   }
   .list .post:hover {
     translate: -3px -3px;
@@ -490,16 +505,32 @@ body {
 .list .post .bottom-line {
   display: flex;
   margin-top: 16px;
-  flex-wrap: wrap-reverse;
   justify-content: space-between;
 }
-.list .post .bottom-line .date {
+.list .post .bottom-line .date-author {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap-reverse;
+  justify-content: space-between;
   flex-grow: 1;
+}
+@media (max-width: 640px) {
+  .list .post .bottom-line .date-author {
+    flex-direction: column;
+  }
+}
+.list .post .bottom-line .date-author .date {
+  flex-grow: 0;
   flex-wrap: nowrap;
-  flex-shrink: 0;
+  flex-shrink: 1;
   display: flex;
 }
-.list .post .bottom-line .date span {
+@media (max-width: 640px) {
+  .list .post .bottom-line .date-author .date {
+    margin-bottom: 5px;
+  }
+}
+.list .post .bottom-line .date-author .date span {
   background-color: #000;
   border-radius: 5px;
   padding: 4px;
@@ -508,19 +539,33 @@ body {
   margin-left: 4px;
   margin-top: -2px;
 }
-.list .post .bottom-line .author {
+.list .post .bottom-line .date-author .author {
   display: flex;
-  flex-shrink: 0;
+  flex-shrink: 1;
 }
-.list .post .bottom-line .author .name {
+.list .post .bottom-line .date-author .author .name {
   margin-right: 8px;
   flex-shrink: 0;
 }
-.list .post .bottom-line .author .avatar {
+.list .post .bottom-line .date-author .author .avatar {
   width: 24px;
   height: 24px;
   border-radius: 100%;
   margin-top: -4px;
+}
+@media (max-width: 640px) {
+  .list .post .bottom-line .date-author .author .avatar {
+    display: none;
+  }
+}
+.list .post .bottom-line .avatar-mobile {
+  height: 45px;
+  border-radius: 5px;
+}
+@media (min-width: 640px) {
+  .list .post .bottom-line .avatar-mobile {
+    display: none;
+  }
 }
 .list .post .selected {
   margin-top: 12px;
@@ -689,6 +734,7 @@ body {
   text-align: center;
   height: 0;
   font-size: 20px;
+  margin-bottom: 15px;
 }
 .respond .text-about {
   overflow-y: auto;
@@ -710,6 +756,14 @@ body {
 }
 .respond .button-container .button-action {
   padding: 15px;
+}
+
+.post-control {
+  margin-top: 15px;
+}
+.post-control .panel-label {
+  margin-left: 6px;
+  margin-bottom: 20px;
 }
 
 .login {
@@ -872,6 +926,56 @@ body {
   animation-timing-function: linar;
   animation-name: new-notifications;
   animation-duration: 1s;
+}
+
+.portfolio-record {
+  max-width: 450px;
+  margin-top: 128px;
+  margin-inline: auto;
+}
+.portfolio-record .content {
+  display: flex;
+  flex-direction: column;
+}
+.portfolio-record .content .title {
+  font-size: 30px;
+  margin-inline: auto;
+  text-align: center;
+}
+.portfolio-record .content .label {
+  font-size: 20px;
+  margin-top: 20px;
+  margin-bottom: 4px;
+  margin-left: 4px;
+}
+.portfolio-record .content .text-input {
+  padding-inline: 8px;
+  padding-block: 12px;
+  border-radius: 8px;
+  border: 1px solid;
+}
+.portfolio-record .content .button, .portfolio-record .content .button-action {
+  margin-top: 28px;
+}
+.portfolio-record .content .info {
+  font-size: 12px;
+  margin-top: 28px;
+  text-align: center;
+  margin-inline: auto;
+  width: fit;
+  padding-left: 8px;
+}
+.portfolio-record .content .info .click {
+  background: #000;
+  padding: 8px;
+  color: white;
+  border-radius: 8px;
+}
+
+.reg-code {
+  font-size: 72px;
+  text-align: center;
+  margin-top: 30vh;
 }
 
 /*# sourceMappingURL=output.css.map */

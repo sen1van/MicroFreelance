@@ -1,0 +1,21 @@
+{% extends "base/base.html" %}
+
+
+{% block content %}
+
+<div class='card portfolio-record'>
+  <form action="" method="post" novalidate>
+    <div class="content">
+        <a class="title">Оставить запись</a>
+        {{ form.hidden_tag() }}
+        <h1 class="label">{{ header }}</h1>
+        <!-- <a class="label">{{ form.data }}</a> -->
+        {{ form.data(size=32, class="text-input", placeholder='Отзыв') }}
+        {{ form.submit(class="button") }}
+        <p class="info">Если оставить пустым, то записи у исполнителя не будет</p>
+    </div>
+</form>
+</div>
+
+
+{% endblock %}

@@ -26,7 +26,9 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-    def check_role(self, roles: list[str]) -> bool: # TODO
+    def check_role(self, roles: list[str]) -> bool:
+        if type(roles) is str:
+            return self.account_type == roles
         return self.account_type in roles
 
     def add_notification(self, header: str, data: str, link: str = '') -> None:
@@ -113,3 +115,10 @@ class Notification(db.Model):
             'create_data' : self.create_date
         }
 
+class Portfolio(db.Model):
+    __table_name__ = 'portfolio'
+
+    id: Mapped[int]                         = mapped_column(primary_key=True)
+    doer_id: Mapped[int]                    = mapped_column(ForeignKey(User.id), nullable=False)
+    data: Mapped[str]                       = mapped_column(String(256))
+    header: Mapped[str]                     = mapped_column(String(256))

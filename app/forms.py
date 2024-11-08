@@ -47,3 +47,7 @@ class AdminUserEditForm(FlaskForm):
     contact_info = TextAreaField('contact_info')
     account_type = StringField('account_type')
     submit = SubmitField('Подтвердить')
+
+class PortfolioRecordForm(FlaskForm):
+    data = TextAreaField('Информация', validators=[DataRequired()])
+    submit = SubmitField('Отправить отклик')

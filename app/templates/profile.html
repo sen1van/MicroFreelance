@@ -30,4 +30,15 @@
     </div>
 </div>
 {% endif %}
+<div class="portfolio">
+    {% if portfolio_records %}
+        <h1>Отзывы</h1>
+    {% endif %}
+{% for record in portfolio_records %}
+    <div class="card">
+        <h2>{{record.header}}</h2>
+        <p>{{record.data}}</p>
+    </div>
+{% endfor %}
+</div>
 {% endblock %}
