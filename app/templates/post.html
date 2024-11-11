@@ -106,10 +106,9 @@
         </div>
     </div>
 </form>
-{% if data.selected %}
+{% if data.selected and current_user.is_authenticated and data.author.id == current_user.id and not data.archived %}
 <div class="card post-control">
     <p class="panel-label">Панель управления заказа</p>
-    <a class="button" href="/cancel-doer/{{data.id}}">Отказ от исполнителя</a>
     <a class="button" href="/change-doer/{{data.id}}">Сменить исполнителя</a>
     <a class="button" href="/finish-post/{{data.id}}">Подтвердить выполнение</a>
 </div>

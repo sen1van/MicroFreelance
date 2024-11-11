@@ -35,6 +35,7 @@ async function get_notifications() {
         return 0
     }
     news = false;
+    data = data.respond
     for (x = 0; x < data.length; x++){
         var notif_data = document.createElement("div");
         new_class = ''

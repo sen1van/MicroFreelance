@@ -49,5 +49,5 @@ class AdminUserEditForm(FlaskForm):
     submit = SubmitField('Подтвердить')
 
 class PortfolioRecordForm(FlaskForm):
-    data = TextAreaField('Информация', validators=[DataRequired()])
+    data = TextAreaField('Информация')
     submit = SubmitField('Отправить отклик')

@@ -334,7 +334,7 @@ def end_post(post_id):
     db.session.commit()
     return redirect(url_for("post", id=post_id))
 
-@app.route('/select_respond/post<post_id>&user<user_id>')
+@app.route('/select-respond/post<post_id>&user<user_id>')
 @login_required
 def select_respond(post_id, user_id):
     post = db.session.scalar( sa.select(Post).where(Post.id == post_id) )
@@ -348,8 +348,19 @@ def select_respond(post_id, user_id):
     db.session.commit()
     return redirect(url_for("post", id=post_id))
 
-
-
+@app.route('/change-respond/post<post_id>')
+@login_required
+def change_respond(post_id):
+    post = db.session.scalar( sa.select(Post).where(Post.id == post_id) )
+    if post.author_id != current_user.id:
+        return abort(403)
+    respond = db.session.query( PostRespond ).filter(PostRespond.author_id == post.selected_respond_author_id).filter(PostRespond.post_id == post_id).first()
+    respond.selected = False
+    post.selected = False
+    post.selected_date = None
+    post.selected_respond_author_id = None
+    db.session.commit()
+    return redirect(url_for("post", id=post_id))
 
 # admin actions
 
@@ -440,8 +451,10 @@ def api_get_notifications():
     data = sa.select(Notification)                         \
             .where(Notification.reciver_id == current_user.id)   \
             .order_by(Notification.create_date.desc()).limit(5)
-    data = list(db.session.scalars(data))
-    return jsonify(*map(lambda x: x.json(), data))
+    data = map(lambda x: x.json(), list(db.session.scalars(data)))
+    data = {'respond': list(data)}
+    # print(data)
+    return jsonify(data)
 
 @app.route('/api/ok-notifications')
 @login_required
@@ -463,25 +476,25 @@ def api_test_notification():
     return {'status' : 'ok'}
 
 
-def record_base(post_id, header):
-    form = PortfolioRecordForm()
+def record_base(post_id, header, form):
     if form.validate_on_submit():
-        user = current_user
-        post = db.session.scalar( sa.select(Post).where(Post.id == post_id) )
-        doer_id = db.session.scalar(
-            sa.select(User)
-                .where(User.id == post.selected_respond_author_id)
-        )
-        portfolio_record = Portfolio()
-        portfolio_record.data = form.data.data
-        portfolio_record.doer_id = doer_id.id
-        portfolio_record.header = header
-    
-        db.session.add(portfolio_record)
-        db.session.commit()
+        if form.data.data:
+            user = current_user
+            post = db.session.scalar( sa.select(Post).where(Post.id == post_id) )
+            doer = db.session.scalar(
+                sa.select(User)
+                    .where(User.id == post.selected_respond_author_id)
+            )
+            portfolio_record = Portfolio()
+            portfolio_record.data = form.data.data
+            portfolio_record.doer_id = doer.id
+            portfolio_record.header = header
+        
+            db.session.add(portfolio_record)
+            db.session.commit()
         flash(['Успех', 'green'])
-        return redirect(url_for('profile'))
-    return render_template('add_portfolio_record.html', form=form, header=header)
+        return True
+    return False
 
 
 @app.route('/finish-post/<post_id>', methods=['GET', 'POST'])
@@ -489,19 +502,40 @@ def record_base(post_id, header):
 def finish_post(post_id):
     if not current_user.check_role(['teacher', 'admin']):
         abort(418)
-    return record_base(post_id, 'Выполнил работу')
+    form = PortfolioRecordForm()
+    header = 'Выполнил работу'
+    if record_base(post_id, header, form):
+        post = db.session.scalar( sa.select(Post).where(Post.id == post_id) )
+        doer = db.session.scalar(
+            sa.select(User)
+                .where(User.id == post.selected_respond_author_id)
+        ) 
+        doer.add_notification(
+            header=f'Пост №{post_id} был отмечен как завершенный',
+            data=f'Вы можете посмотреть реценизию в своем профиле, если её оставили',
+            link=f'/post/{post_id}'
+        )
+        return redirect(url_for('end_post', post_id=post_id))
+    return render_template('add_portfolio_record.html', form=form, header=header)
 
-# @app.route('/finish-post/<post_id>', methods=['GET', 'POST'])
-# @login_required
-# def finish_post(post_id):
-#     if not current_user.check_role(['teacher', 'admin']):
-#         abort(418)
-#     return record_base(post_id, 'Выполнил работу')
-
-# @app.route('/finish-post/<post_id>', methods=['GET', 'POST'])
-# @login_required
-# def finish_post(post_id):
-#     if not current_user.check_role(['teacher', 'admin']):
-#         abort(418)
-#     return record_base(post_id, 'Выполнил работу')
+@app.route('/change-doer/<post_id>', methods=['GET', 'POST'])
+@login_required
+def change_doer(post_id):
+    if not current_user.check_role(['teacher', 'admin']):
+        abort(418)
+    form = PortfolioRecordForm()
+    header = 'Исполнитель изменён'
+    if record_base(post_id, header, form):
+        post = db.session.scalar( sa.select(Post).where(Post.id == post_id) )
+        doer = db.session.scalar(
+            sa.select(User)
+                .where(User.id == post.selected_respond_author_id)
+        ) 
+        doer.add_notification(
+            header=f'Пост №{post_id}: исполнитель изменён',
+            data=f'Вас сменили на другого исполнителя',
+            link=f'/post/{post_id}'
+        )
+        return redirect(url_for('change_respond', post_id=post_id))
+    return render_template('add_portfolio_record.html', form=form, header=header)
 
