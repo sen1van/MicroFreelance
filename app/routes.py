@@ -488,8 +488,9 @@ def record_base(post_id, header, form):
             portfolio_record = Portfolio()
             portfolio_record.data = form.data.data
             portfolio_record.doer_id = doer.id
+            portfolio_record.post_id = post_id
             portfolio_record.header = header
-        
+            
             db.session.add(portfolio_record)
             db.session.commit()
         flash(['Успех', 'green'])

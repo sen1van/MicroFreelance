@@ -120,5 +120,8 @@ class Portfolio(db.Model):
 
     id: Mapped[int]                         = mapped_column(primary_key=True)
     doer_id: Mapped[int]                    = mapped_column(ForeignKey(User.id), nullable=False)
+    post_id: Mapped[int]                    = mapped_column(ForeignKey(Post.id), nullable=False)
     data: Mapped[str]                       = mapped_column(String(256))
     header: Mapped[str]                     = mapped_column(String(256))
+    
+    post: Mapped["Post"] = relationship()

@@ -406,7 +406,13 @@ body {
   margin-top: 20px;
 }
 .portfolio .card {
+  display: flex;
   margin-top: 10px;
+}
+.portfolio .card img {
+  height: 50px;
+  border-radius: 5px;
+  margin-right: 10px;
 }
 .portfolio .card h2 {
   font-size: 20px;

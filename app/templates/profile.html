@@ -34,11 +34,19 @@
     {% if portfolio_records %}
         <h1>Отзывы</h1>
     {% endif %}
-{% for record in portfolio_records %}
-    <div class="card">
-        <h2>{{record.header}}</h2>
-        <p>{{record.data}}</p>
-    </div>
-{% endfor %}
+    {% for record in portfolio_records %}
+        <a href="/post/{{record.post_id}}">
+            <div class="card">
+                <img 
+                    src="{{ url_for('static', filename='avatars/'+ record.post.author.login + '.webp') }}"
+                    onerror="this.src='/static/avatars/placeholder.svg'"
+                >
+                <div>
+                    <h2>{{record.header}}</h2>
+                    <p>{{record.data}}</p>
+                </div>
+            </div>
+        </a>
+    {% endfor %}
 </div>
 {% endblock %}
