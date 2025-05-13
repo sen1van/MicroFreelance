@@ -2,18 +2,18 @@
 
 I recommend creating a virtual environment (venv)  
 `python -m venv .venv` 
+
 to activate venv  
-> in linux  
+> in linux   and MacOs
 `source .venv/bin/activate`
 
-> in windows and mac os  
-`W.I.P.`   
-
+> in windows:
+idk 
 
 ### dependencies
 
 - sass
-- python 3.12 (this project not tested in other versions)
+- python 3.13.3 (this project not tested in other versions)
 - python requirements (see [requirements.txt](../requirements.txt))
 - imagemagisk
 
