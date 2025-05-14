@@ -1,1 +1,16 @@
-<p>pipo</p>
+<script>
+const apiKey = "";
+    const city = "";
+
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        const temperature = data.main.temp;
+        document.getElementById("temp").textContent = `${Math.round(temperature)} °C`;
+      })
+  </script>
+
+
+<div class="notifications" id="temp"></div>
